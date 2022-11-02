@@ -73,10 +73,12 @@
         android:id="@+id/imageView"
         android:layout_width="353dp"
         android:layout_height="222dp"
-        android:layout_marginStart="4dp"
         android:src="@drawable/cacao"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.031"
         tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

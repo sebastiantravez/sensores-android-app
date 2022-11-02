@@ -7,15 +7,18 @@ import static com.example.sensore_android_app.utils.Const.URL;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Humedad;
+import com.example.sensore_android_app.databinding.ActivityLoginBinding;
 import com.example.sensore_android_app.interfaces.HumedadApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,31 +35,41 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class HomeActivity extends AppCompatActivity {
 
     private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
     private Retrofit retrofit;
 
     EditText txtFechaInicio = null;
     EditText txtFechaFin = null;
-    DatePicker datePicker = null;
+    DatePicker datePickerInicio = null;
+    DatePicker datePickerFin = null;
+    ProgressBar progressBar = null;
+    Button btnAplicar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
         txtFechaInicio = findViewById(R.id.txtFechaInicio);
         txtFechaFin = findViewById(R.id.txtFechaFin);
 
-        datePicker = findViewById(R.id.datePicker);
+        datePickerInicio = findViewById(R.id.datePickerInicio);
+        datePickerFin = findViewById(R.id.datePickerFin);
+        progressBar = findViewById(R.id.loading);
+        btnAplicar = findViewById(R.id.btnAplicar);
 
         txtFechaInicio.setText(getFechaInicial());
-        txtFechaFin.setText(getFechaInicial());
+        txtFechaFin.setText(getFechaInicialFin());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+            datePickerInicio.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
                 txtFechaInicio.setText(getFechaInicial());
+                datePickerInicio.setVisibility(View.GONE);
+            });
+            datePickerFin.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
                 txtFechaFin.setText(getFechaInicial());
-                datePicker.setVisibility(View.GONE);
+                datePickerFin.setVisibility(View.GONE);
             });
         }
         init();
@@ -65,22 +78,34 @@ public class HomeActivity extends AppCompatActivity {
 
     private String getFechaInicial() {
         String dia;
-        if (datePicker.getDayOfMonth() <= 9) {
-            dia = "0" + datePicker.getDayOfMonth();
+        if (datePickerInicio.getDayOfMonth() <= 9) {
+            dia = "0" + datePickerInicio.getDayOfMonth();
         } else {
-            dia = String.valueOf(datePicker.getDayOfMonth());
+            dia = String.valueOf(datePickerInicio.getDayOfMonth());
         }
-        String mes = String.valueOf(datePicker.getMonth() + 1);
-        String year = String.valueOf(datePicker.getYear());
+        String mes = String.valueOf(datePickerInicio.getMonth() + 1);
+        String year = String.valueOf(datePickerInicio.getYear());
+        return year + "-" + mes + "-" + dia;
+    }
+
+    private String getFechaInicialFin() {
+        String dia;
+        if (datePickerFin.getDayOfMonth() <= 9) {
+            dia = "0" + datePickerFin.getDayOfMonth();
+        } else {
+            dia = String.valueOf(datePickerFin.getDayOfMonth());
+        }
+        String mes = String.valueOf(datePickerFin.getMonth() + 1);
+        String year = String.valueOf(datePickerFin.getYear());
         return year + "-" + mes + "-" + dia;
     }
 
     public void mostrarCalendarioInicio(View view) {
-        datePicker.setVisibility(View.VISIBLE);
+        datePickerInicio.setVisibility(View.VISIBLE);
     }
 
     public void mostrarCalendarioFin(View view) {
-        datePicker.setVisibility(View.VISIBLE);
+        datePickerFin.setVisibility(View.VISIBLE);
     }
 
     private void init() {
@@ -88,6 +113,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void aplicarFiltros(View view) {
+        btnAplicar.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
 
@@ -104,22 +131,28 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Humedad> call, Response<Humedad> response) {
                     try {
                         if (response.isSuccessful()) {
-                            System.out.printf("EXITOOOO/......");
-                            System.out.printf(response.body().toString());
                             Toast.makeText(getApplicationContext(), response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
                         }
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Humedad> call, Throwable t) {
+                    btnAplicar.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
+            btnAplicar.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
