@@ -6,25 +6,16 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class Humedad {
-    private List<Results> results;
-    private Boolean hasNextPage;
-
-    public Boolean getHasNextPage() {
-        return hasNextPage;
-    }
-
-    public void setHasNextPage(Boolean hasNextPage) {
-        this.hasNextPage = hasNextPage;
-    }
-
-    public List<Results> getResults() {
-        return results;
-    }
-
-    public void setResults(List<Results> results) {
-        this.results = results;
-    }
+    public List<Results> results;
+    public Boolean hasNextPage;
 }

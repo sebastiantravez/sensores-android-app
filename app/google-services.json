@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:756681236474:android:4f17a62b3610a959ee8e43",
         "android_client_info": {
-          "package_name": "com.sensores.app"
+          "package_name": "com.example.sensore_android_app"
         }
       },
       "oauth_client": [
