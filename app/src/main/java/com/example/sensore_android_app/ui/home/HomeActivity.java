@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,14 +17,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Humedad;
-import com.example.sensore_android_app.databinding.ActivityLoginBinding;
+import com.example.sensore_android_app.data.model.Luminosidad;
+import com.example.sensore_android_app.data.model.Temperatura;
 import com.example.sensore_android_app.interfaces.HumedadApi;
+import com.example.sensore_android_app.interfaces.LuminosidadApi;
+import com.example.sensore_android_app.interfaces.TemperaturaApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import kotlin.reflect.jvm.internal.impl.protobuf.Internal;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,6 +75,8 @@ public class HomeActivity extends AppCompatActivity {
         }
         init();
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
 
     private String getFechaInicial() {
@@ -116,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
         btnAplicar.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
 
     public void getHumedad(String fechaInicio, String fechaFin) {
@@ -131,11 +135,12 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Humedad> call, Response<Humedad> response) {
                     try {
                         if (response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Humedad: "+response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -156,4 +161,87 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    public void getTemperatura(String fechaInicio, String fechaFin) {
+        try {
+            Date dateStart = df.parse(fechaInicio);
+            Date dateEnd = df.parse(fechaFin);
+            long startTime = dateStart.getTime();
+            long endTime = dateEnd.getTime();
+            TemperaturaApi temperaturaApi = retrofit.create(TemperaturaApi.class);
+            Call<Temperatura> temperaturaCall = temperaturaApi.getTemperatura(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
+            temperaturaCall.enqueue(new Callback<Temperatura>() {
+                @Override
+                public void onResponse(Call<Temperatura> call, Response<Temperatura> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Tempertura: "+response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        }
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Temperatura> call, Throwable t) {
+                    btnAplicar.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            btnAplicar.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public void getLuminosidad(String fechaInicio, String fechaFin){
+        try {
+            Date dateStart = df.parse(fechaInicio);
+            Date dateEnd = df.parse(fechaFin);
+            long startTime = dateStart.getTime();
+            long endTime = dateEnd.getTime();
+            LuminosidadApi luminosidadApi = retrofit.create(LuminosidadApi.class);
+            Call<Luminosidad> luminosidadCall = luminosidadApi.getLuminosidad(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
+            luminosidadCall.enqueue(new Callback<Luminosidad>() {
+                @Override
+                public void onResponse(Call<Luminosidad> call, Response<Luminosidad> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Luminosidad: "+response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        }
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Luminosidad> call, Throwable t) {
+                    btnAplicar.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            btnAplicar.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

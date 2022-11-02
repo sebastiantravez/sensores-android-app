@@ -28,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseApp firebaseApp;
 
+    EditText txtPassword = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
         loginButton.setEnabled(true);
-
+        txtPassword = passwordEditText;
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,5 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void ojos(View view) {
 
+    }
 }

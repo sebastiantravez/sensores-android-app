@@ -1,4 +1,4 @@
-package com.example.sensore_android_app.data.model;
+    package com.example.sensore_android_app.data.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -16,4 +16,9 @@ import lombok.Setter;
 public class Results {
     public Integer value;
     public Long timestamp;
+    public Object context;
+    public Long createdAt;
+    public Variable variable;
+
+
 }
