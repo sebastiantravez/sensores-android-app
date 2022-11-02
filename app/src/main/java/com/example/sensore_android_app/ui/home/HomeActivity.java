@@ -219,7 +219,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void getLuminosidad(String fechaInicio, String fechaFin){
+    public void getLuminosidad(String fechaInicio, String fechaFin) {
         try {
             Date dateStart = df.parse(fechaInicio);
             Date dateEnd = df.parse(fechaFin);
@@ -232,8 +232,8 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Luminosidad> call, Response<Luminosidad> response) {
                     try {
                         if (response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Luminosidad: "+response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
-                        }else{
+                            Toast.makeText(getApplicationContext(), "Luminosidad: " + response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
+                        } else {
                             Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                         }
                         btnAplicar.setEnabled(true);
@@ -257,6 +257,8 @@ public class HomeActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
     private void getBarCharHumedad(List<Results> results) {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
