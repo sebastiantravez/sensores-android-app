@@ -18,7 +18,7 @@
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false"
-            android:label="Home">
+            android:label="Plantación Cacao Finca El Recreo">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

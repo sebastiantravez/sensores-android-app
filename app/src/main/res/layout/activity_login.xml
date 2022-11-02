@@ -71,8 +71,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="373dp"
-        android:layout_height="221dp"
+        android:layout_width="353dp"
+        android:layout_height="222dp"
         android:layout_marginStart="4dp"
         android:src="@drawable/cacao"
         app:layout_constraintStart_toStartOf="parent"
