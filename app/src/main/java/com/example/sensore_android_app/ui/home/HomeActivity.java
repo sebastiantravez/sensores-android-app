@@ -4,13 +4,15 @@ import static com.example.sensore_android_app.utils.Const.TIME_ZONE;
 import static com.example.sensore_android_app.utils.Const.TOKEN;
 import static com.example.sensore_android_app.utils.Const.URL;
 
+
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,14 +20,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Humedad;
-import com.example.sensore_android_app.databinding.ActivityLoginBinding;
+import com.example.sensore_android_app.data.model.Results;
 import com.example.sensore_android_app.interfaces.HumedadApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import kotlin.reflect.jvm.internal.impl.protobuf.Internal;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,7 +42,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Retrofit retrofit;
 
     EditText txtFechaInicio = null;
@@ -44,12 +52,13 @@ public class HomeActivity extends AppCompatActivity {
     ProgressBar progressBar = null;
     Button btnAplicar = null;
 
+    BarChart barChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         txtFechaInicio = findViewById(R.id.txtFechaInicio);
         txtFechaFin = findViewById(R.id.txtFechaFin);
@@ -58,9 +67,12 @@ public class HomeActivity extends AppCompatActivity {
         datePickerFin = findViewById(R.id.datePickerFin);
         progressBar = findViewById(R.id.loading);
         btnAplicar = findViewById(R.id.btnAplicar);
+        barChart = findViewById(R.id.barChartHumedad);
 
         txtFechaInicio.setText(getFechaInicial());
         txtFechaFin.setText(getFechaInicialFin());
+        txtFechaInicio.setEnabled(false);
+        txtFechaFin.setEnabled(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             datePickerInicio.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
@@ -101,10 +113,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void mostrarCalendarioInicio(View view) {
+        barChart.setVisibility(View.GONE);
         datePickerInicio.setVisibility(View.VISIBLE);
     }
 
     public void mostrarCalendarioFin(View view) {
+        barChart.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
     }
 
@@ -120,8 +134,8 @@ public class HomeActivity extends AppCompatActivity {
 
     public void getHumedad(String fechaInicio, String fechaFin) {
         try {
-            Date dateStart = df.parse(fechaInicio);
-            Date dateEnd = df.parse(fechaFin);
+            Date dateStart = df.parse(fechaInicio + " 00:00:00");
+            Date dateEnd = df.parse(fechaFin + " 23:59:00");
             long startTime = dateStart.getTime();
             long endTime = dateEnd.getTime();
             HumedadApi humedadApi = retrofit.create(HumedadApi.class);
@@ -131,11 +145,10 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Humedad> call, Response<Humedad> response) {
                     try {
                         if (response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
+                            getBarCharHumedad(response.body().results);
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -156,4 +169,30 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void getBarCharHumedad(List<Results> results) {
+        List<BarEntry> barEntries = new ArrayList<>();
+        if (results.isEmpty() || results.get(0).value == null) {
+            barChart.setData(null);
+            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        barChart.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            results.forEach(data -> {
+                float value = (float) (data.value);
+                BarEntry entry = new BarEntry(data.value, value);
+                barEntries.add(entry);
+            });
+        }
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Humedad");
+        barDataSet.setColors(Color.parseColor("#FFAE58"));
+        barDataSet.setValueTextSize(50);
+        barChart.setData(new BarData(barDataSet));
+        barChart.animateY(100);
+        barChart.getDescription().setText("Humedad");
+        barChart.getDescription().setTextSize(100);
+        barChart.getDescription().setTextColor(Color.BLACK);
+    }
+
 }
