@@ -20,8 +20,10 @@ import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Humedad;
 import com.example.sensore_android_app.data.model.HumedadTable;
 import com.example.sensore_android_app.data.model.Luminosidad;
+import com.example.sensore_android_app.data.model.LuminosidadTable;
 import com.example.sensore_android_app.data.model.Results;
 import com.example.sensore_android_app.data.model.Temperatura;
+import com.example.sensore_android_app.data.model.TemperaturaTable;
 import com.example.sensore_android_app.services.ClientApiImpl;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -136,6 +138,9 @@ public class HomeActivity extends AppCompatActivity {
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getHumedadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getTemperaturaTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getLuminosidadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+
     }
 
     public void getHumedad(String fechaInicio, String fechaFin) {
@@ -338,6 +343,74 @@ public class HomeActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<HumedadTable> call, Throwable t) {
+                    btnAplicar.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            btnAplicar.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public void getTemperaturaTable(String fechaInicio, String fechaFin) {
+        try {
+            Call<TemperaturaTable> temperaturaTableCall = clientApi.getTemperaturaTable(fechaInicio, fechaFin);
+            temperaturaTableCall.enqueue(new Callback<TemperaturaTable>() {
+                @Override
+                public void onResponse(Call<TemperaturaTable> call, Response<TemperaturaTable> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            System.out.printf("");
+                        }
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TemperaturaTable> call, Throwable t) {
+                    btnAplicar.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            btnAplicar.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public void getLuminosidadTable(String fechaInicio, String fechaFin) {
+        try {
+            Call<LuminosidadTable> luminosidadTableCall = clientApi.getLuminosidadTable(fechaInicio, fechaFin);
+            luminosidadTableCall.enqueue(new Callback<LuminosidadTable>() {
+                @Override
+                public void onResponse(Call<LuminosidadTable> call, Response<LuminosidadTable> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            System.out.printf("");
+                        }
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LuminosidadTable> call, Throwable t) {
                     btnAplicar.setEnabled(true);
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();

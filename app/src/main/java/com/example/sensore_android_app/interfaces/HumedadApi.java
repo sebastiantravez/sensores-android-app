@@ -20,4 +20,5 @@ public interface HumedadApi {
                                   @Query("tz") String timeZone,
                                   @Query("start") String start,
                                   @Query("end") String end);
+
 }

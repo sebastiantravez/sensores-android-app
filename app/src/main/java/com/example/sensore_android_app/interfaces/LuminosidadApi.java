@@ -1,6 +1,7 @@
 package com.example.sensore_android_app.interfaces;
 
 import com.example.sensore_android_app.data.model.Luminosidad;
+import com.example.sensore_android_app.data.model.LuminosidadTable;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,4 +15,10 @@ public interface LuminosidadApi {
                                     @Query("tz") String timeZone,
                                     @Query("start") String start,
                                     @Query("end") String end);
+
+    @GET("62cf1514e490d90beb348fb7/data")
+    Call<LuminosidadTable> getLuminosidadTable(@Header("X-Auth-Token") String token,
+                                               @Query("tz") String timeZone,
+                                               @Query("start") String start,
+                                               @Query("end") String end);
 }

@@ -1,6 +1,8 @@
 package com.example.sensore_android_app.interfaces;
 
 import com.example.sensore_android_app.data.model.Temperatura;
+import com.example.sensore_android_app.data.model.TemperaturaTable;
+
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,4 +15,10 @@ public interface TemperaturaApi {
                                      @Query("tz") String timeZone,
                                      @Query("start") String start,
                                      @Query("end") String end);
+
+    @GET("62cf14c9e490d90f007f4225/data")
+    Call<TemperaturaTable> getTemperaturaTable(@Header("X-Auth-Token") String token,
+                                               @Query("tz") String timeZone,
+                                               @Query("start") String start,
+                                               @Query("end") String end);
 }

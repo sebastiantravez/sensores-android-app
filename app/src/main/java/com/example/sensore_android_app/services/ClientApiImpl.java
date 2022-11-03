@@ -7,7 +7,9 @@ import static com.example.sensore_android_app.utils.Const.URL;
 import com.example.sensore_android_app.data.model.Humedad;
 import com.example.sensore_android_app.data.model.HumedadTable;
 import com.example.sensore_android_app.data.model.Luminosidad;
+import com.example.sensore_android_app.data.model.LuminosidadTable;
 import com.example.sensore_android_app.data.model.Temperatura;
+import com.example.sensore_android_app.data.model.TemperaturaTable;
 import com.example.sensore_android_app.interfaces.HumedadApi;
 import com.example.sensore_android_app.interfaces.LuminosidadApi;
 import com.example.sensore_android_app.interfaces.TemperaturaApi;
@@ -80,6 +82,34 @@ public class ClientApiImpl {
             HumedadApi humedadApi = retrofit.create(HumedadApi.class);
             Call<HumedadTable> humedadTableCall = humedadApi.getHumedadTable(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
             return humedadTableCall;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Call<TemperaturaTable> getTemperaturaTable(String fechaInicio, String fechaFin) {
+        try {
+            Date dateStart = df.parse(fechaInicio + " 00:00:00");
+            Date dateEnd = df.parse(fechaFin + " 23:59:00");
+            long startTime = dateStart.getTime();
+            long endTime = dateEnd.getTime();
+            TemperaturaApi temperaturaApi = retrofit.create(TemperaturaApi.class);
+            Call<TemperaturaTable> temperaturaTableCall= temperaturaApi.getTemperaturaTable(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
+            return temperaturaTableCall;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Call<LuminosidadTable> getLuminosidadTable(String fechaInicio, String fechaFin) {
+        try {
+            Date dateStart = df.parse(fechaInicio + " 00:00:00");
+            Date dateEnd = df.parse(fechaFin + " 23:59:00");
+            long startTime = dateStart.getTime();
+            long endTime = dateEnd.getTime();
+            LuminosidadApi luminosidadApi = retrofit.create(LuminosidadApi.class);
+            Call<LuminosidadTable> luminosidadTableCall = luminosidadApi.getLuminosidadTable(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
+            return luminosidadTableCall;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
