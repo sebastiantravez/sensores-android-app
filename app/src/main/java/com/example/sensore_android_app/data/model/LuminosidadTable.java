@@ -11,7 +11,6 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-
 public class LuminosidadTable {
-    public ArrayList<ArrayList<Double>> results;
+    public ArrayList<ArrayList<Long>> results;
 }
