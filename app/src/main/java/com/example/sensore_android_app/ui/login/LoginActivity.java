@@ -34,6 +34,12 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -76,9 +82,5 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    public void ojos(View view) {
-
     }
 }
