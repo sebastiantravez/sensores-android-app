@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensore_android_app.R;
@@ -32,7 +33,11 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     BarChart barChartTem;
     BarChart barChartLum;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -75,16 +81,15 @@ public class HomeActivity extends AppCompatActivity {
         txtFechaInicio.setEnabled(false);
         txtFechaFin.setEnabled(false);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            datePickerInicio.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
-                txtFechaInicio.setText(getFechaInicial());
-                datePickerInicio.setVisibility(View.GONE);
-            });
-            datePickerFin.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
-                txtFechaFin.setText(getFechaInicialFin());
-                datePickerFin.setVisibility(View.GONE);
-            });
-        }
+        datePickerInicio.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+            txtFechaInicio.setText(getFechaInicial());
+            datePickerInicio.setVisibility(View.GONE);
+        });
+        datePickerFin.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+            txtFechaFin.setText(getFechaInicialFin());
+            datePickerFin.setVisibility(View.GONE);
+        });
+
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
@@ -147,6 +152,7 @@ public class HomeActivity extends AppCompatActivity {
         try {
             Call<Humedad> humedadCall = clientApi.getHumedad(fechaInicio, fechaFin);
             humedadCall.enqueue(new Callback<Humedad>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onResponse(Call<Humedad> call, Response<Humedad> response) {
                     try {
@@ -181,11 +187,12 @@ public class HomeActivity extends AppCompatActivity {
         try {
             Call<Temperatura> temperaturaCall = clientApi.getTemperatura(fechaInicio, fechaFin);
             temperaturaCall.enqueue(new Callback<Temperatura>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onResponse(Call<Temperatura> call, Response<Temperatura> response) {
                     try {
                         if (response.isSuccessful()) {
-                             getBarCharTemperatura(response.body().results);
+                            getBarCharTemperatura(response.body().results);
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -214,6 +221,7 @@ public class HomeActivity extends AppCompatActivity {
         try {
             Call<Luminosidad> luminosidadCall = clientApi.getLuminosidad(fechaInicio, fechaFin);
             luminosidadCall.enqueue(new Callback<Luminosidad>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onResponse(Call<Luminosidad> call, Response<Luminosidad> response) {
                     try {
@@ -243,6 +251,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getBarCharHumedad(List<Results> results) {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
@@ -251,14 +260,12 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
         barChartHum.setVisibility(View.VISIBLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            results.forEach(data -> {
-                BarEntry entry = new BarEntry(0, data.value);
-                BarEntry entry2 = new BarEntry(1, 100);
-                barEntries.add(entry);
-                barEntries.add(entry2);
-            });
-        }
+        results.forEach(data -> {
+            BarEntry entry = new BarEntry(0, data.value);
+            BarEntry entry2 = new BarEntry(1, 100);
+            barEntries.add(entry);
+            barEntries.add(entry2);
+        });
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Humedad");
         barDataSet.setColors(Color.parseColor("#FFAE58"));
         barDataSet.setValueTextSize(VALUE_TEXT_SIZE);
@@ -269,22 +276,20 @@ public class HomeActivity extends AppCompatActivity {
         barChartHum.getDescription().setTextColor(Color.BLACK);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getBarCharTemperatura(List<Results> results) {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
             barChartTem.setData(null);
-            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
             return;
         }
         barChartTem.setVisibility(View.VISIBLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            results.forEach(data -> {
-                BarEntry entry = new BarEntry(0, data.value);
-                BarEntry entry2 = new BarEntry(1, 100);
-                barEntries.add(entry);
-                barEntries.add(entry2);
-            });
-        }
+        results.forEach(data -> {
+            BarEntry entry = new BarEntry(0, data.value);
+            BarEntry entry2 = new BarEntry(1, 100);
+            barEntries.add(entry);
+            barEntries.add(entry2);
+        });
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Temperatura");
         barDataSet.setColors(Color.parseColor("#FFAE58"));
         barDataSet.setValueTextSize(VALUE_TEXT_SIZE);
@@ -295,22 +300,21 @@ public class HomeActivity extends AppCompatActivity {
         barChartTem.getDescription().setTextColor(Color.BLACK);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getBarCharLuminosidad(List<Results> results) {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
             barChartLum.setData(null);
-            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
             return;
         }
         barChartLum.setVisibility(View.VISIBLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            results.forEach(data -> {
-                BarEntry entry = new BarEntry(0, data.value);
-                BarEntry entry2 = new BarEntry(1, 100);
-                barEntries.add(entry);
-                barEntries.add(entry2);
-            });
-        }
+        results.forEach(data -> {
+            BarEntry entry = new BarEntry(0, data.value);
+            BarEntry entry2 = new BarEntry(1, 100);
+            barEntries.add(entry);
+            barEntries.add(entry2);
+        });
+
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Luminosidad");
         barDataSet.setColors(Color.parseColor("#FFAE58"));
         barDataSet.setValueTextSize(VALUE_TEXT_SIZE);
@@ -326,11 +330,17 @@ public class HomeActivity extends AppCompatActivity {
         try {
             Call<HumedadTable> humedadTableCall = clientApi.getHumedadTable(fechaInicio, fechaFin);
             humedadTableCall.enqueue(new Callback<HumedadTable>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onResponse(Call<HumedadTable> call, Response<HumedadTable> response) {
                     try {
                         if (response.isSuccessful()) {
-                            System.out.printf("");
+                            Map<Date, Long> data = new HashMap<>();
+                            response.body().results.forEach(val -> {
+                                data.put(new Date(Long.parseLong(val.get(0).toString())), val.get(1));
+                            });
+
+                            System.out.printf(data.toString());
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
