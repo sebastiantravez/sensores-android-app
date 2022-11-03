@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Humedad;
+import com.example.sensore_android_app.data.model.HumedadTable;
 import com.example.sensore_android_app.data.model.Luminosidad;
 import com.example.sensore_android_app.data.model.Results;
 import com.example.sensore_android_app.data.model.Temperatura;
@@ -85,6 +86,7 @@ public class HomeActivity extends AppCompatActivity {
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getHumedadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
 
     private String getFechaInicial() {
@@ -133,6 +135,7 @@ public class HomeActivity extends AppCompatActivity {
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getHumedadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
 
     public void getHumedad(String fechaInicio, String fechaFin) {
@@ -313,4 +316,37 @@ public class HomeActivity extends AppCompatActivity {
         barChartLum.getDescription().setTextColor(Color.BLACK);
     }
 
+
+    public void getHumedadTable(String fechaInicio, String fechaFin) {
+        try {
+            Call<HumedadTable> humedadTableCall = clientApi.getHumedadTable(fechaInicio, fechaFin);
+            humedadTableCall.enqueue(new Callback<HumedadTable>() {
+                @Override
+                public void onResponse(Call<HumedadTable> call, Response<HumedadTable> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            System.out.printf("");
+                        }
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        btnAplicar.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<HumedadTable> call, Throwable t) {
+                    btnAplicar.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            btnAplicar.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }
