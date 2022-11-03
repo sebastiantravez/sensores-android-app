@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.sensore_android_app.databinding.ActivityLoginBinding;
 import com.example.sensore_android_app.ui.home.HomeActivity;
+import com.example.sensore_android_app.ui.register.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
+        final Button registerButton = binding.register;
         final ProgressBar loadingProgressBar = binding.loading;
         loginButton.setEnabled(true);
         txtPassword = passwordEditText;
@@ -73,6 +75,16 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Error autenticando con Firebase " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+               loadingProgressBar.setVisibility(View.VISIBLE);
+                registerButton.setEnabled(false);
+                finish();
             }
         });
     }
