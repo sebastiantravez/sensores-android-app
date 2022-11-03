@@ -1,12 +1,16 @@
 package com.example.sensore_android_app.ui.home;
 
+import static com.example.sensore_android_app.utils.Const.DURATION;
+import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.TIME_ZONE;
 import static com.example.sensore_android_app.utils.Const.TOKEN;
 import static com.example.sensore_android_app.utils.Const.URL;
+import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
 
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -28,9 +32,13 @@ import com.example.sensore_android_app.interfaces.LuminosidadApi;
 import com.example.sensore_android_app.interfaces.TemperaturaApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
@@ -88,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
                 datePickerInicio.setVisibility(View.GONE);
             });
             datePickerFin.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
-                txtFechaFin.setText(getFechaInicial());
+                txtFechaFin.setText(getFechaInicialFin());
                 datePickerFin.setVisibility(View.GONE);
             });
         }
@@ -96,6 +104,10 @@ public class HomeActivity extends AppCompatActivity {
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+    }
+
+    private void init() {
+        retrofit = new Retrofit.Builder().baseUrl(URL).addConverterFactory(JacksonConverterFactory.create(new ObjectMapper())).build();
     }
 
     private String getFechaInicial() {
@@ -134,10 +146,6 @@ public class HomeActivity extends AppCompatActivity {
         barChartTem.setVisibility(View.GONE);
         barChartLum.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
-    }
-
-    private void init() {
-        retrofit = new Retrofit.Builder().baseUrl(URL).addConverterFactory(JacksonConverterFactory.create(new ObjectMapper())).build();
     }
 
     public void aplicarFiltros(View view) {
@@ -275,17 +283,19 @@ public class HomeActivity extends AppCompatActivity {
         barChartHum.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             results.forEach(data -> {
-                BarEntry entry = new BarEntry(100,data.value);
+                BarEntry entry = new BarEntry(0, data.value);
+                BarEntry entry2 = new BarEntry(1, 100);
                 barEntries.add(entry);
+                barEntries.add(entry2);
             });
         }
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Humedad");
         barDataSet.setColors(Color.parseColor("#FFAE58"));
-        barDataSet.setValueTextSize(50);
+        barDataSet.setValueTextSize(VALUE_TEXT_SIZE);
         barChartHum.setData(new BarData(barDataSet));
-        barChartHum.animateY(100);
-        barChartHum.getDescription().setText("Humedad");
-        barChartHum.getDescription().setTextSize(100);
+        barChartHum.animateY(DURATION);
+        barChartHum.getDescription().setText("");
+        barChartHum.getDescription().setTextSize(TEXT_SIZE);
         barChartHum.getDescription().setTextColor(Color.BLACK);
     }
 
@@ -299,17 +309,19 @@ public class HomeActivity extends AppCompatActivity {
         barChartTem.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             results.forEach(data -> {
-                BarEntry entry = new BarEntry(100, data.value);
+                BarEntry entry = new BarEntry(0, data.value);
+                BarEntry entry2 = new BarEntry(1, 100);
                 barEntries.add(entry);
+                barEntries.add(entry2);
             });
         }
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Temperatura");
         barDataSet.setColors(Color.parseColor("#FFAE58"));
-        barDataSet.setValueTextSize(50);
+        barDataSet.setValueTextSize(VALUE_TEXT_SIZE);
         barChartTem.setData(new BarData(barDataSet));
-        barChartTem.animateY(100);
-        barChartTem.getDescription().setText("Temperatura");
-        barChartTem.getDescription().setTextSize(100);
+        barChartTem.animateY(DURATION);
+        barChartTem.getDescription().setText("");
+        barChartTem.getDescription().setTextSize(TEXT_SIZE);
         barChartTem.getDescription().setTextColor(Color.BLACK);
     }
 
@@ -323,17 +335,19 @@ public class HomeActivity extends AppCompatActivity {
         barChartLum.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             results.forEach(data -> {
-                BarEntry entry = new BarEntry(100, data.value);
+                BarEntry entry = new BarEntry(0, data.value);
+                BarEntry entry2 = new BarEntry(1, 100);
                 barEntries.add(entry);
+                barEntries.add(entry2);
             });
         }
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Luminosidad");
         barDataSet.setColors(Color.parseColor("#FFAE58"));
-        barDataSet.setValueTextSize(50);
+        barDataSet.setValueTextSize(VALUE_TEXT_SIZE);
         barChartLum.setData(new BarData(barDataSet));
-        barChartLum.animateY(100);
-        barChartLum.getDescription().setText("Luminosidad");
-        barChartLum.getDescription().setTextSize(100);
+        barChartLum.animateY(DURATION);
+        barChartLum.getDescription().setText("");
+        barChartLum.getDescription().setTextSize(TEXT_SIZE);
         barChartLum.getDescription().setTextColor(Color.BLACK);
     }
 

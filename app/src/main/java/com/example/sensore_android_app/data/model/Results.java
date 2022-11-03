@@ -14,7 +14,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class Results {
-    public Integer value;
+    public Float value;
     public Long timestamp;
     public Object context;
     public Long createdAt;
