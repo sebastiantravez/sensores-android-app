@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         firebaseAuth = FirebaseAuth.getInstance();
-        final EditText usernameEditText = binding.username;
+        final TextInputLayout usernameEditText = findViewById(R.id.username);
         final TextInputLayout passwordEditText = findViewById(R.id.password);
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userEmail = usernameEditText.getText().toString().trim();
+                String userEmail = usernameEditText.getEditText().getText().toString().trim();
                 String password = passwordEditText.getEditText().getText().toString().trim();
                 if (userEmail.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Error ingrese usuario y clave", Toast.LENGTH_SHORT).show();
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                             loadingProgressBar.setVisibility(View.GONE);
                             loginButton.setEnabled(true);
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                            Toast.makeText(getApplicationContext(), "Bienvenido " + usernameEditText.getText().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Bienvenido " + usernameEditText.getEditText().toString(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "Error autenticando con Firebase", Toast.LENGTH_SHORT).show();
                         }
