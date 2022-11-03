@@ -37,7 +37,6 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ClientApiImpl clientApi = new ClientApiImpl();
 
     EditText txtFechaInicio = null;

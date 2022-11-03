@@ -24,12 +24,11 @@ public class ClientApiImpl {
     private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Retrofit retrofit;
 
-    private void init() {
+    public ClientApiImpl(){
         retrofit = new Retrofit.Builder().baseUrl(URL).addConverterFactory(JacksonConverterFactory.create(new ObjectMapper())).build();
     }
 
     public Call<Humedad> getHumedad(String fechaInicio, String fechaFin) {
-        init();
         try {
             Date dateStart = df.parse(fechaInicio + " 00:00:00");
             Date dateEnd = df.parse(fechaFin + " 23:59:00");
@@ -44,7 +43,6 @@ public class ClientApiImpl {
     }
 
     public Call<Temperatura> getTemperatura(String fechaInicio, String fechaFin) {
-        init();
         try {
             Date dateStart = df.parse(fechaInicio + " 00:00:00");
             Date dateEnd = df.parse(fechaFin + " 23:59:00");
@@ -59,7 +57,6 @@ public class ClientApiImpl {
     }
 
     public Call<Luminosidad> getLuminosidad(String fechaInicio, String fechaFin) {
-        init();
         try {
             Date dateStart = df.parse(fechaInicio + " 00:00:00");
             Date dateEnd = df.parse(fechaFin + " 23:59:00");
