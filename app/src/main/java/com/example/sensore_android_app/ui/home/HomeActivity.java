@@ -30,7 +30,11 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -180,7 +184,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Temperatura> call, Response<Temperatura> response) {
                     try {
                         if (response.isSuccessful()) {
-                             getBarCharTemperatura(response.body().results);
+                            getBarCharTemperatura(response.body().results);
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -268,7 +272,6 @@ public class HomeActivity extends AppCompatActivity {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
             barChartTem.setData(null);
-            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
             return;
         }
         barChartTem.setVisibility(View.VISIBLE);
@@ -294,7 +297,6 @@ public class HomeActivity extends AppCompatActivity {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
             barChartLum.setData(null);
-            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
             return;
         }
         barChartLum.setVisibility(View.VISIBLE);
@@ -325,7 +327,13 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<HumedadTable> call, Response<HumedadTable> response) {
                     try {
                         if (response.isSuccessful()) {
-                            System.out.printf("");
+                            Map<Date, Long> data = new HashMap<>();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                response.body().results.forEach(val -> {
+                                    data.put(new Date(Long.parseLong(val.get(0).toString())), val.get(1));
+                                });
+                            }
+                            System.out.printf(data.toString());
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
