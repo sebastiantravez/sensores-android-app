@@ -13,12 +13,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.databinding.ActivityLoginBinding;
 import com.example.sensore_android_app.ui.home.HomeActivity;
 import com.example.sensore_android_app.ui.register.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,22 +35,27 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         firebaseAuth = FirebaseAuth.getInstance();
-        final EditText usernameEditText = binding.username;
-        final EditText passwordEditText = binding.password;
+        final TextInputLayout usernameEditText = findViewById(R.id.username);
+        final TextInputLayout passwordEditText = findViewById(R.id.password);
         final Button loginButton = binding.login;
         final Button registerButton = binding.register;
         final ProgressBar loadingProgressBar = binding.loading;
         loginButton.setEnabled(true);
-        txtPassword = passwordEditText;
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userEmail = usernameEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+                String userEmail = usernameEditText.getEditText().getText().toString().trim();
+                String password = passwordEditText.getEditText().getText().toString().trim();
                 if (userEmail.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Error ingrese usuario y clave", Toast.LENGTH_SHORT).show();
                     return;
@@ -62,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                             loadingProgressBar.setVisibility(View.GONE);
                             loginButton.setEnabled(true);
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                            Toast.makeText(getApplicationContext(), "Bienvenido " + usernameEditText.getText().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Bienvenido " + usernameEditText.getEditText().toString(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "Error autenticando con Firebase", Toast.LENGTH_SHORT).show();
                         }
@@ -87,9 +94,5 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    public void ojos(View view) {
-
     }
 }
