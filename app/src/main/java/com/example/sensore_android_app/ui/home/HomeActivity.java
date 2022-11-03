@@ -2,15 +2,9 @@ package com.example.sensore_android_app.ui.home;
 
 import static com.example.sensore_android_app.utils.Const.DURATION;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
-import static com.example.sensore_android_app.utils.Const.TIME_ZONE;
-import static com.example.sensore_android_app.utils.Const.TOKEN;
-import static com.example.sensore_android_app.utils.Const.URL;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
 
-
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -25,37 +19,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Humedad;
 import com.example.sensore_android_app.data.model.Luminosidad;
-import com.example.sensore_android_app.data.model.Temperatura;
 import com.example.sensore_android_app.data.model.Results;
-import com.example.sensore_android_app.interfaces.HumedadApi;
-import com.example.sensore_android_app.interfaces.LuminosidadApi;
-import com.example.sensore_android_app.interfaces.TemperaturaApi;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.sensore_android_app.data.model.Temperatura;
+import com.example.sensore_android_app.services.ClientApiImpl;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity {
 
     private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private Retrofit retrofit;
+    private ClientApiImpl clientApi = new ClientApiImpl();
 
     EditText txtFechaInicio = null;
     EditText txtFechaFin = null;
@@ -100,14 +83,9 @@ public class HomeActivity extends AppCompatActivity {
                 datePickerFin.setVisibility(View.GONE);
             });
         }
-        init();
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
-    }
-
-    private void init() {
-        retrofit = new Retrofit.Builder().baseUrl(URL).addConverterFactory(JacksonConverterFactory.create(new ObjectMapper())).build();
     }
 
     private String getFechaInicial() {
@@ -160,12 +138,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void getHumedad(String fechaInicio, String fechaFin) {
         try {
-            Date dateStart = df.parse(fechaInicio + " 00:00:00");
-            Date dateEnd = df.parse(fechaFin + " 23:59:00");
-            long startTime = dateStart.getTime();
-            long endTime = dateEnd.getTime();
-            HumedadApi humedadApi = retrofit.create(HumedadApi.class);
-            Call<Humedad> humedadCall = humedadApi.getHumedad(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
+            Call<Humedad> humedadCall = clientApi.getHumedad(fechaInicio, fechaFin);
             humedadCall.enqueue(new Callback<Humedad>() {
                 @Override
                 public void onResponse(Call<Humedad> call, Response<Humedad> response) {
@@ -199,12 +172,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void getTemperatura(String fechaInicio, String fechaFin) {
         try {
-            Date dateStart = df.parse(fechaInicio + " 00:00:00");
-            Date dateEnd = df.parse(fechaFin + " 23:59:00");
-            long startTime = dateStart.getTime();
-            long endTime = dateEnd.getTime();
-            TemperaturaApi temperaturaApi = retrofit.create(TemperaturaApi.class);
-            Call<Temperatura> temperaturaCall = temperaturaApi.getTemperatura(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
+            Call<Temperatura> temperaturaCall = clientApi.getTemperatura(fechaInicio, fechaFin);
             temperaturaCall.enqueue(new Callback<Temperatura>() {
                 @Override
                 public void onResponse(Call<Temperatura> call, Response<Temperatura> response) {
@@ -237,12 +205,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void getLuminosidad(String fechaInicio, String fechaFin) {
         try {
-            Date dateStart = df.parse(fechaInicio + " 00:00:00");
-            Date dateEnd = df.parse(fechaFin + " 23:59:00");
-            long startTime = dateStart.getTime();
-            long endTime = dateEnd.getTime();
-            LuminosidadApi luminosidadApi = retrofit.create(LuminosidadApi.class);
-            Call<Luminosidad> luminosidadCall = luminosidadApi.getLuminosidad(TOKEN, TIME_ZONE, Long.toString(startTime), Long.toString(endTime));
+            Call<Luminosidad> luminosidadCall = clientApi.getLuminosidad(fechaInicio, fechaFin);
             luminosidadCall.enqueue(new Callback<Luminosidad>() {
                 @Override
                 public void onResponse(Call<Luminosidad> call, Response<Luminosidad> response) {
