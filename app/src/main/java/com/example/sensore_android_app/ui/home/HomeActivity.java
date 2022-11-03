@@ -56,7 +56,9 @@ public class HomeActivity extends AppCompatActivity {
     ProgressBar progressBar = null;
     Button btnAplicar = null;
 
-    BarChart barChart;
+    BarChart barChartHum;
+    BarChart barChartTem;
+    BarChart barChartLum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,9 @@ public class HomeActivity extends AppCompatActivity {
         datePickerFin = findViewById(R.id.datePickerFin);
         progressBar = findViewById(R.id.loading);
         btnAplicar = findViewById(R.id.btnAplicar);
-        barChart = findViewById(R.id.barChartHumedad);
+        barChartHum = findViewById(R.id.barChartHumedad);
+        barChartTem = findViewById(R.id.barChartTemperatura);
+        barChartLum = findViewById(R.id.barChartLuminosidad);
 
         txtFechaInicio.setText(getFechaInicial());
         txtFechaFin.setText(getFechaInicialFin());
@@ -119,12 +123,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void mostrarCalendarioInicio(View view) {
-        barChart.setVisibility(View.GONE);
+        barChartHum.setVisibility(View.GONE);
+        barChartTem.setVisibility(View.GONE);
+        barChartLum.setVisibility(View.GONE);
         datePickerInicio.setVisibility(View.VISIBLE);
     }
 
     public void mostrarCalendarioFin(View view) {
-        barChart.setVisibility(View.GONE);
+        barChartHum.setVisibility(View.GONE);
+        barChartTem.setVisibility(View.GONE);
+        barChartLum.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
     }
 
@@ -135,8 +143,11 @@ public class HomeActivity extends AppCompatActivity {
     public void aplicarFiltros(View view) {
         btnAplicar.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
+        datePickerInicio.setVisibility(View.GONE);
+        datePickerFin.setVisibility(View.GONE);
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
 
     public void getHumedad(String fechaInicio, String fechaFin) {
@@ -180,8 +191,8 @@ public class HomeActivity extends AppCompatActivity {
 
     public void getTemperatura(String fechaInicio, String fechaFin) {
         try {
-            Date dateStart = df.parse(fechaInicio);
-            Date dateEnd = df.parse(fechaFin);
+            Date dateStart = df.parse(fechaInicio + " 00:00:00");
+            Date dateEnd = df.parse(fechaFin + " 23:59:00");
             long startTime = dateStart.getTime();
             long endTime = dateEnd.getTime();
             TemperaturaApi temperaturaApi = retrofit.create(TemperaturaApi.class);
@@ -191,9 +202,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Temperatura> call, Response<Temperatura> response) {
                     try {
                         if (response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Tempertura: "+response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                             getBarCharTemperatura(response.body().results);
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -218,11 +227,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
     public void getLuminosidad(String fechaInicio, String fechaFin) {
         try {
-            Date dateStart = df.parse(fechaInicio);
-            Date dateEnd = df.parse(fechaFin);
+            Date dateStart = df.parse(fechaInicio + " 00:00:00");
+            Date dateEnd = df.parse(fechaFin + " 23:59:00");
             long startTime = dateStart.getTime();
             long endTime = dateEnd.getTime();
             LuminosidadApi luminosidadApi = retrofit.create(LuminosidadApi.class);
@@ -232,9 +240,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Luminosidad> call, Response<Luminosidad> response) {
                     try {
                         if (response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Luminosidad: " + response.body().results.get(0).value.toString(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                            getBarCharLuminosidad(response.body().results);
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -262,26 +268,73 @@ public class HomeActivity extends AppCompatActivity {
     private void getBarCharHumedad(List<Results> results) {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
-            barChart.setData(null);
+            barChartHum.setData(null);
             Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
             return;
         }
-        barChart.setVisibility(View.VISIBLE);
+        barChartHum.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             results.forEach(data -> {
-                float value = (float) (data.value);
-                BarEntry entry = new BarEntry(data.value, value);
+                BarEntry entry = new BarEntry(100,data.value);
                 barEntries.add(entry);
             });
         }
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Humedad");
         barDataSet.setColors(Color.parseColor("#FFAE58"));
         barDataSet.setValueTextSize(50);
-        barChart.setData(new BarData(barDataSet));
-        barChart.animateY(100);
-        barChart.getDescription().setText("Humedad");
-        barChart.getDescription().setTextSize(100);
-        barChart.getDescription().setTextColor(Color.BLACK);
+        barChartHum.setData(new BarData(barDataSet));
+        barChartHum.animateY(100);
+        barChartHum.getDescription().setText("Humedad");
+        barChartHum.getDescription().setTextSize(100);
+        barChartHum.getDescription().setTextColor(Color.BLACK);
+    }
+
+    private void getBarCharTemperatura(List<Results> results) {
+        List<BarEntry> barEntries = new ArrayList<>();
+        if (results.isEmpty() || results.get(0).value == null) {
+            barChartTem.setData(null);
+            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        barChartTem.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            results.forEach(data -> {
+                BarEntry entry = new BarEntry(100, data.value);
+                barEntries.add(entry);
+            });
+        }
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Temperatura");
+        barDataSet.setColors(Color.parseColor("#FFAE58"));
+        barDataSet.setValueTextSize(50);
+        barChartTem.setData(new BarData(barDataSet));
+        barChartTem.animateY(100);
+        barChartTem.getDescription().setText("Temperatura");
+        barChartTem.getDescription().setTextSize(100);
+        barChartTem.getDescription().setTextColor(Color.BLACK);
+    }
+
+    private void getBarCharLuminosidad(List<Results> results) {
+        List<BarEntry> barEntries = new ArrayList<>();
+        if (results.isEmpty() || results.get(0).value == null) {
+            barChartLum.setData(null);
+            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        barChartLum.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            results.forEach(data -> {
+                BarEntry entry = new BarEntry(100, data.value);
+                barEntries.add(entry);
+            });
+        }
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Luminosidad");
+        barDataSet.setColors(Color.parseColor("#FFAE58"));
+        barDataSet.setValueTextSize(50);
+        barChartLum.setData(new BarData(barDataSet));
+        barChartLum.animateY(100);
+        barChartLum.getDescription().setText("Luminosidad");
+        barChartLum.getDescription().setTextSize(100);
+        barChartLum.getDescription().setTextColor(Color.BLACK);
     }
 
 }
