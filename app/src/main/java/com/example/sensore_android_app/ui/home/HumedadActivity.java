@@ -123,12 +123,14 @@ public class HumedadActivity extends AppCompatActivity {
         barChartHum.setVisibility(View.GONE);
         lineChartHumedad.setVisibility(View.GONE);
         datePickerInicio.setVisibility(View.VISIBLE);
+        datePickerFin.setVisibility(View.GONE);
     }
 
     public void mostrarCalendarioFin(View view) {
         barChartHum.setVisibility(View.GONE);
         lineChartHumedad.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
+        datePickerInicio.setVisibility(View.GONE);
     }
 
     public void aplicarFiltros(View view) {
