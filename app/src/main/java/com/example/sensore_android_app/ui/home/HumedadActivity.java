@@ -293,6 +293,7 @@ public class HumedadActivity extends AppCompatActivity {
         LineData lineData = new LineData(dataSets);
         lineChartHumedad.getDescription().setText("Humedad");
         lineChartHumedad.getDescription().setTextSize(TEXT_SIZE);
+        lineChartHumedad.animateY(DURATION);
         lineChartHumedad.setData(lineData);
     }
 }
