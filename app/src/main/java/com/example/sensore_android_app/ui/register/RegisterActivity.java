@@ -44,6 +44,10 @@ public class RegisterActivity extends AppCompatActivity {
                 registerButton.setEnabled(true);
                 EditText emailText = (EditText) findViewById(R.id.txtEmail);
                 EditText passwordText = (EditText) findViewById(R.id.txtPassword);
+                if(emailText.getText().toString().isEmpty() || passwordText.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Debe completar los campos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 registerUser(emailText.getText().toString(), passwordText.getText().toString());
                 registerButton.setEnabled(false);
             }
