@@ -17,21 +17,24 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".LuminosidadActivity"
+            android:name=".ui.home.LuminosidadActivity"
+            android:label="Registro de Luminosidad"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".TemperaturaActivity"
+            android:name=".ui.home.TemperaturaActivity"
+            android:label="Registro de Temperatura"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".HumedadActivity"
+            android:name=".ui.home.HumedadActivity"
+            android:label="Registro de Humedad"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
