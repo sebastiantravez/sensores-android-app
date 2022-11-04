@@ -90,8 +90,9 @@ public class HumedadActivity extends AppCompatActivity {
             datePickerFin.setVisibility(View.GONE);
         });
 
-        getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getHumedadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+
     }
 
     private String getFechaInicial() {
@@ -120,11 +121,13 @@ public class HumedadActivity extends AppCompatActivity {
 
     public void mostrarCalendarioInicio(View view) {
         barChartHum.setVisibility(View.GONE);
+        lineChartHumedad.setVisibility(View.GONE);
         datePickerInicio.setVisibility(View.VISIBLE);
     }
 
     public void mostrarCalendarioFin(View view) {
         barChartHum.setVisibility(View.GONE);
+        lineChartHumedad.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
     }
 
