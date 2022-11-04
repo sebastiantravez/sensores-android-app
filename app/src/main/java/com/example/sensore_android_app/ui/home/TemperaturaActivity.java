@@ -287,7 +287,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.addAll(lineDataSets);
         LineData lineData = new LineData(dataSets);
-        lineChartHumedad.getDescription().setText("Humedad");
+        lineChartHumedad.getDescription().setText("Temperatura");
         lineChartHumedad.getDescription().setTextSize(TEXT_SIZE);
         lineChartHumedad.animateY(DURATION);
         lineChartHumedad.setData(lineData);
