@@ -171,6 +171,9 @@ public class HomeActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             getBarCharHumedad(response.body().results);
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -495,7 +498,8 @@ public class HomeActivity extends AppCompatActivity {
         List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.addAll(lineDataSets);
         LineData lineData = new LineData(dataSets);
-        lineChartHumedad.getDescription().setText("");
+        lineChartHumedad.getDescription().setText("Humedad");
+        lineChartHumedad.getDescription().setTextSize(TEXT_SIZE);
         lineChartHumedad.setData(lineData);
     }
 }
