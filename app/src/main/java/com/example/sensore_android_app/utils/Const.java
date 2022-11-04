@@ -8,4 +8,6 @@ public class Const {
     public static final Integer DURATION = 500;
     public static final Integer VALUE_TEXT_SIZE = 30;
     public static final Integer TEXT_SIZE = 100;
+    public static final String COLOR_THEME = "#FFAE58";
+
 }

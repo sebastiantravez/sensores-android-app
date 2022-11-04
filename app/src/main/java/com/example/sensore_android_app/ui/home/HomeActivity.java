@@ -1,5 +1,6 @@
 package com.example.sensore_android_app.ui.home;
 
+import static com.example.sensore_android_app.utils.Const.COLOR_THEME;
 import static com.example.sensore_android_app.utils.Const.DURATION;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
@@ -13,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,6 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     BarChart barChartLum;
     LineChart lineChartHumedad;
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
         barChartTem = findViewById(R.id.barChartTemperatura);
         barChartLum = findViewById(R.id.barChartLuminosidad);
         lineChartHumedad = findViewById(R.id.lineChartHumedad);
+
 
         txtFechaInicio.setText(getFechaInicial());
         txtFechaFin.setText(getFechaInicialFin());
@@ -332,7 +336,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Plantacion de Cacao - Luminosidad");
-        barDataSet.setColors(Color.parseColor("#FFAE58"));
+        barDataSet.setColors(Color.parseColor(COLOR_THEME));
         barDataSet.setValueTextSize(VALUE_TEXT_SIZE);
         barChartLum.setData(new BarData(barDataSet));
         barChartLum.animateY(DURATION);
