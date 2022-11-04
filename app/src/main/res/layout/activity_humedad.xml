@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HumedadActivity">
 
+
     <EditText
         android:id="@+id/txtFechaFin"
         android:layout_width="100dp"
@@ -117,7 +118,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/loading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
