@@ -459,23 +459,41 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
         lineChartHumedad.setVisibility(View.VISIBLE);
-        List<LineDataSet> set1 = new ArrayList<>();
+        Map<Date, Entry> mapa = new TreeMap<>();
         AtomicReference<Integer> count = new AtomicReference<>(0);
         results.forEach((key, value) -> {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String fecha = dateFormat.format(key);
             Integer x = count.getAndSet(count.get() + 1);
-            List<Entry> yValues = new ArrayList<>();
-            yValues.add(new Entry(x, value));
-            set1.add(new LineDataSet(yValues, fecha));
+            mapa.put(key, new Entry(x, value));
         });
-        List<ILineDataSet> dataSets = new ArrayList<>();
-        List<LineDataSet> sets = set1.stream().map(lineDataSet -> {
-            lineDataSet.setHighlightLineWidth(100);
+
+        List<LineDataSet> lineDataSets = new ArrayList<>();
+        Map<String, List<Entry>> listMap = new TreeMap<>();
+        mapa.forEach((key, value) -> {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String fecha = dateFormat.format(key);
+            if (listMap.isEmpty()) {
+                List<Entry> entries = new ArrayList<>();
+                entries.add(value);
+                listMap.put(fecha, entries);
+            } else {
+                List<Entry> lista = listMap.get(fecha);
+                if (lista == null) {
+                    lista = new ArrayList<>();
+                }
+                lista.add(value);
+                listMap.put(fecha, lista);
+            }
+        });
+
+        listMap.forEach((key, value) -> {
+            LineDataSet lineDataSet = new LineDataSet(value, key);
+            lineDataSet.setValueTextSize(15);
             lineDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            return lineDataSet;
-        }).collect(Collectors.toList());
-        dataSets.addAll(sets);
+            lineDataSets.add(lineDataSet);
+        });
+
+        List<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.addAll(lineDataSets);
         LineData lineData = new LineData(dataSets);
         lineChartHumedad.getDescription().setText("");
         lineChartHumedad.setData(lineData);
