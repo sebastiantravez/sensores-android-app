@@ -88,10 +88,11 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-               loadingProgressBar.setVisibility(View.VISIBLE);
+                loadingProgressBar.setVisibility(View.VISIBLE);
                 registerButton.setEnabled(false);
-                finish();
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                loadingProgressBar.setVisibility(View.GONE);
+                registerButton.setEnabled(true);
             }
         });
     }
