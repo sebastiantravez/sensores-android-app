@@ -58,7 +58,7 @@ public class TemperaturaActivity extends AppCompatActivity {
     Button btnAplicar = null;
 
     BarChart barChartTem;
-    LineChart lineChartHumedad;
+    LineChart lineChartTem;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -74,7 +74,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.loading);
         btnAplicar = findViewById(R.id.btnAplicar);
         barChartTem = findViewById(R.id.barChartTemperatura);
-        lineChartHumedad = findViewById(R.id.lineChartTemperatura);
+        lineChartTem = findViewById(R.id.lineChartTemperatura);
 
         txtFechaInicio.setText(getFechaInicial());
         txtFechaFin.setText(getFechaInicialFin());
@@ -120,14 +120,14 @@ public class TemperaturaActivity extends AppCompatActivity {
 
     public void mostrarCalendarioInicio(View view) {
         barChartTem.setVisibility(View.GONE);
-        lineChartHumedad.setVisibility(View.GONE);
+        lineChartTem.setVisibility(View.GONE);
         datePickerInicio.setVisibility(View.VISIBLE);
         datePickerFin.setVisibility(View.GONE);
     }
 
     public void mostrarCalendarioFin(View view) {
         barChartTem.setVisibility(View.GONE);
-        lineChartHumedad.setVisibility(View.GONE);
+        lineChartTem.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
         datePickerInicio.setVisibility(View.GONE);
     }
@@ -214,7 +214,19 @@ public class TemperaturaActivity extends AppCompatActivity {
                                 String fechaUnica = dateFormat.format(new Date(Long.parseLong(val.get(0).toString())));
                                 try {
                                     Date fechaFinal = dateFormat.parse(fechaUnica);
-                                    data.put(fechaFinal, val.get(1));
+                                    if (data.isEmpty()) {
+                                        data.put(fechaFinal, val.get(1));
+                                    } else {
+                                        Long valor = data.get(fechaFinal);
+                                        if (valor == null) {
+                                            valor = val.get(1);
+                                            data.put(fechaFinal, valor);
+                                        } else if (val.get(1) > valor) {
+                                            data.put(fechaFinal, val.get(1));
+                                        } else {
+                                            data.put(fechaFinal, valor);
+                                        }
+                                    }
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
@@ -250,7 +262,7 @@ public class TemperaturaActivity extends AppCompatActivity {
             barChartTem.setData(null);
             return;
         }
-        lineChartHumedad.setVisibility(View.VISIBLE);
+        lineChartTem.setVisibility(View.VISIBLE);
         Map<Date, Entry> mapa = new TreeMap<>();
         AtomicReference<Integer> count = new AtomicReference<>(0);
         results.forEach((key, value) -> {
@@ -287,9 +299,9 @@ public class TemperaturaActivity extends AppCompatActivity {
         List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.addAll(lineDataSets);
         LineData lineData = new LineData(dataSets);
-        lineChartHumedad.getDescription().setText("Temperatura");
-        lineChartHumedad.getDescription().setTextSize(TEXT_SIZE);
-        lineChartHumedad.animateY(DURATION);
-        lineChartHumedad.setData(lineData);
+        lineChartTem.getDescription().setText("Temperatura");
+        lineChartTem.getDescription().setTextSize(TEXT_SIZE);
+        lineChartTem.animateY(DURATION);
+        lineChartTem.setData(lineData);
     }
 }
