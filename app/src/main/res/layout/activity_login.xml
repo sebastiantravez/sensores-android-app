@@ -28,48 +28,54 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/username"
-        android:layout_width="339dp"
+        android:layout_width="321dp"
         android:layout_height="57dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:ems="15"
-            android:inputType="textEmailAddress" />
+            android:background="@drawable/border"
+            android:drawableRight="@drawable/ic_baseline_mail_outline_24"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password"
-        android:layout_width="341dp"
-        android:layout_height="59dp"
+        android:layout_width="321dp"
+        android:layout_height="56dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/prompt_password"
-        android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        tools:ignore="MissingConstraints">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:ems="15"
+            android:background="@drawable/border"
+            android:hint="Contraseña"
             android:inputType="textPassword" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
