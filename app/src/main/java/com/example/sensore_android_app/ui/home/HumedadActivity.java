@@ -123,12 +123,14 @@ public class HumedadActivity extends AppCompatActivity {
         barChartHum.setVisibility(View.GONE);
         lineChartHumedad.setVisibility(View.GONE);
         datePickerInicio.setVisibility(View.VISIBLE);
+        datePickerFin.setVisibility(View.GONE);
     }
 
     public void mostrarCalendarioFin(View view) {
         barChartHum.setVisibility(View.GONE);
         lineChartHumedad.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
+        datePickerInicio.setVisibility(View.GONE);
     }
 
     public void aplicarFiltros(View view) {
@@ -218,7 +220,19 @@ public class HumedadActivity extends AppCompatActivity {
                                 String fechaUnica = dateFormat.format(new Date(Long.parseLong(val.get(0).toString())));
                                 try {
                                     Date fechaFinal = dateFormat.parse(fechaUnica);
-                                    data.put(fechaFinal, val.get(1));
+                                    if (data.isEmpty()) {
+                                        data.put(fechaFinal, val.get(1));
+                                    } else {
+                                        Long valor = data.get(fechaFinal);
+                                        if (valor == null) {
+                                            valor = val.get(1);
+                                            data.put(fechaFinal, valor);
+                                        } else if (val.get(1) > valor) {
+                                            data.put(fechaFinal, val.get(1));
+                                        } else {
+                                            data.put(fechaFinal, valor);
+                                        }
+                                    }
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
