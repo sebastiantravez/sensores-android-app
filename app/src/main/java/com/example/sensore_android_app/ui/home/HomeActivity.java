@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.sensore_android_app.R;
+import com.example.sensore_android_app.databinding.ActivityHomeBinding;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -21,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
     AppCompatImageView imageButtonTem;
     AppCompatImageView imageButtonLum;
 
+
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -28,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
 
         imageButtonHum = findViewById(R.id.btnHumedad);
         imageButtonTem = findViewById(R.id.btnTemperatura);

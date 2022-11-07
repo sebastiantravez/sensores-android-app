@@ -27,8 +27,8 @@
 
     <ImageButton
         android:id="@+id/btnFechaFin"
-        android:layout_width="63dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="5dp"
@@ -56,8 +56,8 @@
 
     <ImageButton
         android:id="@+id/btnFechaInicio"
-        android:layout_width="61dp"
-        android:layout_height="47dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:onClick="mostrarCalendarioInicio"
