@@ -1,12 +1,11 @@
 package com.example.sensore_android_app.ui.home;
 
+import static com.example.sensore_android_app.utils.Const.BAR_HUMEDAD_NAME;
 import static com.example.sensore_android_app.utils.Const.COLOR_THEME;
 import static com.example.sensore_android_app.utils.Const.DURATION;
+import static com.example.sensore_android_app.utils.Const.LINE_HUMEDAD_NAME;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -17,6 +16,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Humedad;
@@ -32,7 +35,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,6 +66,9 @@ public class HumedadActivity extends AppCompatActivity {
 
     BarChart barChartHum;
     LineChart lineChartHumedad;
+
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -91,8 +100,8 @@ public class HumedadActivity extends AppCompatActivity {
             datePickerFin.setVisibility(View.GONE);
         });
 
-        getHumedadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getHumedad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
+        getHumedadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
 
     }
 
@@ -154,7 +163,7 @@ public class HumedadActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             getBarCharHumedad(response.body().results);
-                        }else{
+                        } else {
                             Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -204,6 +213,7 @@ public class HumedadActivity extends AppCompatActivity {
         barChartHum.getDescription().setText("");
         barChartHum.getDescription().setTextSize(TEXT_SIZE);
         barChartHum.getDescription().setTextColor(Color.BLACK);
+        persistirBarGraficaDataFirebase(results);
     }
 
     public void getHumedadTable(String fechaInicio, String fechaFin) {
@@ -238,7 +248,7 @@ public class HumedadActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             });
-                            getLineChartHumedad(data);
+                            getLineChartHumedad(data, response.body());
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -264,7 +274,7 @@ public class HumedadActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getLineChartHumedad(Map<Date, Long> results) {
+    public void getLineChartHumedad(Map<Date, Long> results, HumedadTable humedadTable) {
         if (results.isEmpty()) {
             barChartHum.setData(null);
             return;
@@ -310,5 +320,38 @@ public class HumedadActivity extends AppCompatActivity {
         lineChartHumedad.getDescription().setTextSize(TEXT_SIZE);
         lineChartHumedad.animateY(DURATION);
         lineChartHumedad.setData(lineData);
+        persistirLineGraficaDataFirebase(humedadTable);
     }
+
+    private void persistirBarGraficaDataFirebase(List<Results> results) {
+        Results humedadRegistro = new Results();
+        humedadRegistro.createdAt = results.get(0).createdAt;
+        humedadRegistro.value = results.get(0).value;
+        databaseReference.child(BAR_HUMEDAD_NAME).setValue(humedadRegistro).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("Registro creado");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void persistirLineGraficaDataFirebase(HumedadTable humedadTable) {
+        databaseReference.child(LINE_HUMEDAD_NAME).setValue(humedadTable).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("Registro creado");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

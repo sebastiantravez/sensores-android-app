@@ -1,12 +1,11 @@
 package com.example.sensore_android_app.ui.home;
 
+import static com.example.sensore_android_app.utils.Const.BAR_TEMPERATURA_NAME;
 import static com.example.sensore_android_app.utils.Const.COLOR_THEME;
 import static com.example.sensore_android_app.utils.Const.DURATION;
+import static com.example.sensore_android_app.utils.Const.LINE_TEMPERATURA_NAME;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -17,6 +16,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.data.model.Results;
@@ -32,7 +35,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,6 +66,9 @@ public class TemperaturaActivity extends AppCompatActivity {
 
     BarChart barChartTem;
     LineChart lineChartTem;
+
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -198,6 +207,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         barChartTem.getDescription().setText("");
         barChartTem.getDescription().setTextSize(TEXT_SIZE);
         barChartTem.getDescription().setTextColor(Color.BLACK);
+        persistirBarGraficaDataFirebase(results);
     }
 
     public void getTemperaturaTable(String fechaInicio, String fechaFin) {
@@ -232,7 +242,7 @@ public class TemperaturaActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             });
-                            getLineChartTemperatura(data);
+                            getLineChartTemperatura(data, response.body());
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -258,7 +268,7 @@ public class TemperaturaActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getLineChartTemperatura(Map<Date, Long> results) {
+    public void getLineChartTemperatura(Map<Date, Long> results, TemperaturaTable temperaturaTable) {
         if (results.isEmpty()) {
             barChartTem.setData(null);
             return;
@@ -304,5 +314,37 @@ public class TemperaturaActivity extends AppCompatActivity {
         lineChartTem.getDescription().setTextSize(TEXT_SIZE);
         lineChartTem.animateY(DURATION);
         lineChartTem.setData(lineData);
+        persistirLineGraficaDataFirebase(temperaturaTable);
+    }
+
+    private void persistirBarGraficaDataFirebase(List<Results> results) {
+        Results humedadRegistro = new Results();
+        humedadRegistro.createdAt = results.get(0).createdAt;
+        humedadRegistro.value = results.get(0).value;
+        databaseReference.child(BAR_TEMPERATURA_NAME).setValue(humedadRegistro).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("Registro creado");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void persistirLineGraficaDataFirebase(TemperaturaTable temperaturaTable) {
+        databaseReference.child(LINE_TEMPERATURA_NAME).setValue(temperaturaTable).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("Registro creado");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

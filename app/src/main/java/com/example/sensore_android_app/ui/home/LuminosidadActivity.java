@@ -1,7 +1,9 @@
 package com.example.sensore_android_app.ui.home;
 
+import static com.example.sensore_android_app.utils.Const.BAR_LUMINOSIDAD_NAME;
 import static com.example.sensore_android_app.utils.Const.COLOR_THEME;
 import static com.example.sensore_android_app.utils.Const.DURATION;
+import static com.example.sensore_android_app.utils.Const.LINE_LUMINOSIDAD_NAME;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
 
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,7 +35,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,6 +67,8 @@ public class LuminosidadActivity extends AppCompatActivity {
     BarChart barChartLum;
     LineChart lineChartLum;
 
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -198,6 +206,7 @@ public class LuminosidadActivity extends AppCompatActivity {
         barChartLum.getDescription().setText("");
         barChartLum.getDescription().setTextSize(TEXT_SIZE);
         barChartLum.getDescription().setTextColor(Color.BLACK);
+        persistirBarGraficaDataFirebase(results);
     }
 
     public void getLuminosidadTable(String fechaInicio, String fechaFin) {
@@ -232,7 +241,7 @@ public class LuminosidadActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             });
-                            getLineChartLuminosidad(data);
+                            getLineChartLuminosidad(data, response.body());
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -258,7 +267,7 @@ public class LuminosidadActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getLineChartLuminosidad(Map<Date, Long> results) {
+    public void getLineChartLuminosidad(Map<Date, Long> results, LuminosidadTable luminosidadTable) {
         if (results.isEmpty()) {
             lineChartLum.setData(null);
             return;
@@ -304,5 +313,37 @@ public class LuminosidadActivity extends AppCompatActivity {
         lineChartLum.getDescription().setTextSize(TEXT_SIZE);
         lineChartLum.animateY(DURATION);
         lineChartLum.setData(lineData);
+        persistirLineGraficaDataFirebase(luminosidadTable);
+    }
+
+    private void persistirBarGraficaDataFirebase(List<Results> results) {
+        Results humedadRegistro = new Results();
+        humedadRegistro.createdAt = results.get(0).createdAt;
+        humedadRegistro.value = results.get(0).value;
+        databaseReference.child(BAR_LUMINOSIDAD_NAME).setValue(humedadRegistro).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("Registro creado");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void persistirLineGraficaDataFirebase(LuminosidadTable luminosidadTable) {
+        databaseReference.child(LINE_LUMINOSIDAD_NAME).setValue(luminosidadTable).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("Registro creado");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
