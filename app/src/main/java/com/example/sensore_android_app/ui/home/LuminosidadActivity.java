@@ -292,8 +292,8 @@ public class LuminosidadActivity extends AppCompatActivity {
 
         listMap.forEach((key, value) -> {
             LineDataSet lineDataSet = new LineDataSet(value, key);
-            lineDataSet.setValueTextSize(15);
-            lineDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            lineDataSet.setDrawCircles(false);
+            lineDataSet.setColors(Color.parseColor(COLOR_THEME));
             lineDataSets.add(lineDataSet);
         });
 

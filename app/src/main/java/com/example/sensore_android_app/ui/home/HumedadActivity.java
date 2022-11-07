@@ -1,5 +1,6 @@
 package com.example.sensore_android_app.ui.home;
 
+import static com.example.sensore_android_app.utils.Const.COLOR_THEME;
 import static com.example.sensore_android_app.utils.Const.DURATION;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
@@ -297,8 +298,8 @@ public class HumedadActivity extends AppCompatActivity {
 
         listMap.forEach((key, value) -> {
             LineDataSet lineDataSet = new LineDataSet(value, key);
-            lineDataSet.setValueTextSize(15);
-            lineDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            lineDataSet.setDrawCircles(false);
+            lineDataSet.setColors(Color.parseColor(COLOR_THEME));
             lineDataSets.add(lineDataSet);
         });
 
