@@ -11,39 +11,50 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/cocoa"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/cocoa"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sensoreandroidapp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.main.MainActivity"
+            android:label="SN Control"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.home.LuminosidadActivity"
-            android:label="Registro de Luminosidad"
-            android:exported="false">
+            android:exported="false"
+            android:label="Registro de Luminosidad">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ui.home.TemperaturaActivity"
-            android:label="Registro de Temperatura"
-            android:exported="false">
+            android:exported="false"
+            android:label="Registro de Temperatura">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ui.home.HumedadActivity"
-            android:label="Registro de Humedad"
-            android:exported="false">
+            android:exported="false"
+            android:label="Registro de Humedad">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ui.register.RegisterActivity"
-            android:label="Formulario"
-            android:exported="false">
+            android:exported="false"
+            android:label="Formulario">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -59,14 +70,8 @@
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="true"
-            android:label="Cacao App">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:label="Login"></activity>
     </application>
 
 </manifest>

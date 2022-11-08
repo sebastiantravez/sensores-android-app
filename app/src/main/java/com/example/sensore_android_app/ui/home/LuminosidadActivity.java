@@ -100,6 +100,9 @@ public class LuminosidadActivity extends AppCompatActivity {
             datePickerFin.setVisibility(View.GONE);
         });
 
+        barChartLum.setVisibility(View.GONE);
+        lineChartLum.setVisibility(View.GONE);
+
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
@@ -130,12 +133,14 @@ public class LuminosidadActivity extends AppCompatActivity {
 
     public void mostrarCalendarioInicio(View view) {
         barChartLum.setVisibility(View.GONE);
+        lineChartLum.setVisibility(View.GONE);
         datePickerInicio.setVisibility(View.VISIBLE);
         datePickerFin.setVisibility(View.GONE);
     }
 
     public void mostrarCalendarioFin(View view) {
         barChartLum.setVisibility(View.GONE);
+        lineChartLum.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.VISIBLE);
         datePickerInicio.setVisibility(View.GONE);
     }
@@ -159,6 +164,9 @@ public class LuminosidadActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             getBarCharLuminosidad(response.body().results);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -188,6 +196,7 @@ public class LuminosidadActivity extends AppCompatActivity {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
             barChartLum.setData(null);
+            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
             return;
         }
         barChartLum.setVisibility(View.VISIBLE);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cacao App</string>
+    <string name="app_name">SN Control</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Iniciar Sesion</string>

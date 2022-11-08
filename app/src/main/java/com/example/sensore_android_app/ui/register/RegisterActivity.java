@@ -27,16 +27,19 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
-   private FirebaseAuth authentication = null;
+    private FirebaseAuth authentication = null;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference connection = database.getReference();
+
+    Button registerButton = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         authentication = FirebaseAuth.getInstance();
-        Button registerButton = findViewById(R.id.btnRegisterUser);
+        registerButton = findViewById(R.id.btnRegisterUser);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,8 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
                 registerButton.setEnabled(true);
                 EditText emailText = (EditText) findViewById(R.id.txtEmail);
                 EditText passwordText = (EditText) findViewById(R.id.txtPassword);
-                if(emailText.getText().toString().isEmpty() || passwordText.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "Debe completar los campos", Toast.LENGTH_SHORT).show();
+                if (emailText.getText().toString().isEmpty() || passwordText.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Debe completar los campos", Toast.LENGTH_LONG).show();
                     return;
                 }
                 registerUser(emailText.getText().toString(), passwordText.getText().toString());
@@ -54,26 +57,28 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void registerUser(String email, String password){
+    private void registerUser(String email, String password) {
         authentication.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    UserRegister user = new UserRegister(email,password);
+                    UserRegister user = new UserRegister(email, password);
                     connection.child("users").child(uid).setValue(user);
                     Toast.makeText(getApplicationContext(), "Bienvenido el usuario se ha creado correctamente", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                     finish();
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(getApplicationContext(), "Error no registrado con Firebase", Toast.LENGTH_SHORT).show();
+                    registerButton.setEnabled(true);
+                    Toast.makeText(getApplicationContext(), "Error no registrado " + task.getException().getMessage(), Toast.LENGTH_LONG);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getApplicationContext(), "Error creando usuario con Firebase " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                registerButton.setEnabled(true);
             }
         });
     }

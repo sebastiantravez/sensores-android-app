@@ -100,6 +100,9 @@ public class TemperaturaActivity extends AppCompatActivity {
             datePickerFin.setVisibility(View.GONE);
         });
 
+        barChartTem.setVisibility(View.GONE);
+        lineChartTem.setVisibility(View.GONE);
+
         getTemperatura(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getTemperaturaTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
@@ -161,6 +164,9 @@ public class TemperaturaActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             getBarCharTemperatura(response.body().results);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error " + response.message(), Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         btnAplicar.setEnabled(true);
                         progressBar.setVisibility(View.GONE);
@@ -190,6 +196,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         List<BarEntry> barEntries = new ArrayList<>();
         if (results.isEmpty() || results.get(0).value == null) {
             barChartTem.setData(null);
+            Toast.makeText(getApplicationContext(), "Datos seleccionados sin resultados", Toast.LENGTH_SHORT).show();
             return;
         }
         barChartTem.setVisibility(View.VISIBLE);
