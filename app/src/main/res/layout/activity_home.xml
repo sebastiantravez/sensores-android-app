@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:visibility="visible"
-    tools:context=".ui.home.HomeActivity">
+    tools:context=".">
 
     <TextView
         android:id="@+id/textView2"

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,6 +17,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.databinding.ActivityHomeBinding;
+import com.example.sensore_android_app.ui.login.LoginActivity;
+
+import lombok.NonNull;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -60,4 +65,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.btnClose:
+                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

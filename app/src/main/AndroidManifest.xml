@@ -33,6 +33,7 @@
         <activity
             android:name=".ui.home.LuminosidadActivity"
             android:exported="false"
+            android:parentActivityName=".ui.home.HomeActivity"
             android:label="Registro de Luminosidad">
             <meta-data
                 android:name="android.app.lib_name"
@@ -41,6 +42,7 @@
         <activity
             android:name=".ui.home.TemperaturaActivity"
             android:exported="false"
+            android:parentActivityName=".ui.home.HomeActivity"
             android:label="Registro de Temperatura">
             <meta-data
                 android:name="android.app.lib_name"
@@ -49,7 +51,8 @@
         <activity
             android:name=".ui.home.HumedadActivity"
             android:exported="false"
-            android:label="Registro de Humedad">
+            android:label="Registro de Humedad"
+            android:parentActivityName=".ui.home.HomeActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -57,6 +60,7 @@
         <activity
             android:name=".ui.register.RegisterActivity"
             android:exported="false"
+            android:parentActivityName=".ui.home.HomeActivity"
             android:label="Formulario">
             <meta-data
                 android:name="android.app.lib_name"

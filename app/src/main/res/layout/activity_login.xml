@@ -38,7 +38,8 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7">
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:passwordToggleTint="#0E0E0E">
 
         <EditText
             android:layout_width="match_parent"
@@ -68,6 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:passwordToggleEnabled="true"
+        app:passwordToggleTint="#050505"
         tools:ignore="MissingConstraints">
 
         <EditText

@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                             loadingProgressBar.setVisibility(View.GONE);
                             loginButton.setEnabled(true);
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            finish();
                             Toast.makeText(getApplicationContext(), "Bienvenido " + usernameEditText.getEditText().getText().toString(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "Error autenticando con Firebase", Toast.LENGTH_SHORT).show();
