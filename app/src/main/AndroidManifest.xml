@@ -9,19 +9,18 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/cocoa"
-        android:roundIcon="@drawable/cocoa"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Sensoreandroidapp"
         android:usesCleartextTraffic="true"
+        android:icon="@drawable/cocoa"
+        android:roundIcon="@drawable/cocoa"
+        android:theme="@style/Theme.Sensoreandroidapp"
         tools:targetApi="31">
         <activity
             android:name=".ui.main.MainActivity"
-            android:icon="@drawable/cocoa"
-            android:roundIcon="@drawable/cocoa"
             android:label="SN Control"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

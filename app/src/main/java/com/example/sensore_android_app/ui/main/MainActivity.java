@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        setTheme(R.style.Theme_Sensoreandroidapp);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startActivity(new Intent(this, LoginActivity.class));
