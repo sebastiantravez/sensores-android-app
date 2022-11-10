@@ -215,7 +215,7 @@ public class LuminosidadActivity extends AppCompatActivity {
         barChartLum.getDescription().setText("");
         barChartLum.getDescription().setTextSize(TEXT_SIZE);
         barChartLum.getDescription().setTextColor(Color.BLACK);
-        persistirBarGraficaDataFirebase(results);
+        sincronizarBarChartDataFirebase(results);
     }
 
     public void getLuminosidadTable(String fechaInicio, String fechaFin) {
@@ -322,10 +322,10 @@ public class LuminosidadActivity extends AppCompatActivity {
         lineChartLum.getDescription().setTextSize(TEXT_SIZE);
         lineChartLum.animateY(DURATION);
         lineChartLum.setData(lineData);
-        persistirLineGraficaDataFirebase(luminosidadTable);
+        sincronizarChartLineDataFirebase(luminosidadTable);
     }
 
-    private void persistirBarGraficaDataFirebase(List<Results> results) {
+    private void sincronizarBarChartDataFirebase(List<Results> results) {
         Results humedadRegistro = new Results();
         humedadRegistro.createdAt = results.get(0).createdAt;
         humedadRegistro.value = results.get(0).value;
@@ -342,7 +342,7 @@ public class LuminosidadActivity extends AppCompatActivity {
         });
     }
 
-    private void persistirLineGraficaDataFirebase(LuminosidadTable luminosidadTable) {
+    private void sincronizarChartLineDataFirebase(LuminosidadTable luminosidadTable) {
         databaseReference.child(LINE_LUMINOSIDAD_NAME).setValue(luminosidadTable).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

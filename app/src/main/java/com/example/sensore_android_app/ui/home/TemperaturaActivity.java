@@ -214,7 +214,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         barChartTem.getDescription().setText("");
         barChartTem.getDescription().setTextSize(TEXT_SIZE);
         barChartTem.getDescription().setTextColor(Color.BLACK);
-        persistirBarGraficaDataFirebase(results);
+        sincronizarBarChartDataFirebase(results);
     }
 
     public void getTemperaturaTable(String fechaInicio, String fechaFin) {
@@ -321,10 +321,10 @@ public class TemperaturaActivity extends AppCompatActivity {
         lineChartTem.getDescription().setTextSize(TEXT_SIZE);
         lineChartTem.animateY(DURATION);
         lineChartTem.setData(lineData);
-        persistirLineGraficaDataFirebase(temperaturaTable);
+        sincronizarChartLineDataFirebase(temperaturaTable);
     }
 
-    private void persistirBarGraficaDataFirebase(List<Results> results) {
+    private void sincronizarBarChartDataFirebase(List<Results> results) {
         Results humedadRegistro = new Results();
         humedadRegistro.createdAt = results.get(0).createdAt;
         humedadRegistro.value = results.get(0).value;
@@ -341,7 +341,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         });
     }
 
-    private void persistirLineGraficaDataFirebase(TemperaturaTable temperaturaTable) {
+    private void sincronizarChartLineDataFirebase(TemperaturaTable temperaturaTable) {
         databaseReference.child(LINE_TEMPERATURA_NAME).setValue(temperaturaTable).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

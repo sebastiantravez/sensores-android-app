@@ -216,7 +216,7 @@ public class HumedadActivity extends AppCompatActivity {
         barChartHum.getDescription().setText("");
         barChartHum.getDescription().setTextSize(TEXT_SIZE);
         barChartHum.getDescription().setTextColor(Color.BLACK);
-        persistirBarGraficaDataFirebase(results);
+        sincronizarBarChartDataFirebase(results);
     }
 
     public void getHumedadTable(String fechaInicio, String fechaFin) {
@@ -323,10 +323,10 @@ public class HumedadActivity extends AppCompatActivity {
         lineChartHumedad.getDescription().setTextSize(TEXT_SIZE);
         lineChartHumedad.animateY(DURATION);
         lineChartHumedad.setData(lineData);
-        persistirLineGraficaDataFirebase(humedadTable);
+        sincronizarChartLineDataFirebase(humedadTable);
     }
 
-    private void persistirBarGraficaDataFirebase(List<Results> results) {
+    private void sincronizarBarChartDataFirebase(List<Results> results) {
         Results humedadRegistro = new Results();
         humedadRegistro.createdAt = results.get(0).createdAt;
         humedadRegistro.value = results.get(0).value;
@@ -343,7 +343,7 @@ public class HumedadActivity extends AppCompatActivity {
         });
     }
 
-    private void persistirLineGraficaDataFirebase(HumedadTable humedadTable) {
+    private void sincronizarChartLineDataFirebase(HumedadTable humedadTable) {
         databaseReference.child(LINE_HUMEDAD_NAME).setValue(humedadTable).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
