@@ -201,7 +201,7 @@ public class LuminosidadActivity extends AppCompatActivity {
         }
         barChartLum.setVisibility(View.VISIBLE);
         results.forEach(data -> {
-            BarEntry entry = new BarEntry(0, data.value);
+            BarEntry entry = new BarEntry(0, Float.parseFloat(data.value.toString()));
             BarEntry entry2 = new BarEntry(1, 100);
             barEntries.add(entry);
             barEntries.add(entry2);
@@ -326,10 +326,10 @@ public class LuminosidadActivity extends AppCompatActivity {
     }
 
     private void sincronizarBarChartDataFirebase(List<Results> results) {
-        Results humedadRegistro = new Results();
-        humedadRegistro.createdAt = results.get(0).createdAt;
-        humedadRegistro.value = results.get(0).value;
-        databaseReference.child(BAR_LUMINOSIDAD_NAME).setValue(humedadRegistro).addOnSuccessListener(new OnSuccessListener<Void>() {
+        Results lumRegistro = new Results();
+        lumRegistro.createdAt = results.get(0).timestamp;
+        lumRegistro.resultValue = Float.valueOf(results.get(0).value.toString());
+        databaseReference.child(BAR_LUMINOSIDAD_NAME).setValue(lumRegistro).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 System.out.println("Registro creado");

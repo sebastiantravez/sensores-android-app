@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +18,10 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class Results {
-    public Float value;
+    public BigDecimal value;
     public Long timestamp;
     public Object context;
     public Long createdAt;
     public Variable variable;
+    public Float resultValue;
 }

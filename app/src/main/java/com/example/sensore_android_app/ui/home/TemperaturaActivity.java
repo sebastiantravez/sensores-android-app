@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -201,7 +202,7 @@ public class TemperaturaActivity extends AppCompatActivity {
         }
         barChartTem.setVisibility(View.VISIBLE);
         results.forEach(data -> {
-            BarEntry entry = new BarEntry(0, data.value);
+            BarEntry entry = new BarEntry(0, Float.parseFloat(data.value.toString()));
             BarEntry entry2 = new BarEntry(1, 100);
             barEntries.add(entry);
             barEntries.add(entry2);
@@ -325,10 +326,10 @@ public class TemperaturaActivity extends AppCompatActivity {
     }
 
     private void sincronizarBarChartDataFirebase(List<Results> results) {
-        Results humedadRegistro = new Results();
-        humedadRegistro.createdAt = results.get(0).createdAt;
-        humedadRegistro.value = results.get(0).value;
-        databaseReference.child(BAR_TEMPERATURA_NAME).setValue(humedadRegistro).addOnSuccessListener(new OnSuccessListener<Void>() {
+        Results tempRegistro = new Results();
+        tempRegistro.createdAt = results.get(0).timestamp;
+        tempRegistro.resultValue = Float.valueOf(results.get(0).value.toString());
+        databaseReference.child(BAR_TEMPERATURA_NAME).setValue(tempRegistro).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 System.out.println("Registro creado");
