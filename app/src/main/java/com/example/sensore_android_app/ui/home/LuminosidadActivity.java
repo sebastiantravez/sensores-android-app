@@ -145,11 +145,20 @@ public class LuminosidadActivity extends AppCompatActivity {
         datePickerInicio.setVisibility(View.GONE);
     }
 
-    public void aplicarFiltros(View view) {
+    public void aplicarFiltros(View view) throws ParseException {
         btnAplicar.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         datePickerInicio.setVisibility(View.GONE);
         datePickerFin.setVisibility(View.GONE);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = simpleDateFormat.parse(txtFechaInicio.getText().toString());
+        Date end = simpleDateFormat.parse(txtFechaFin.getText().toString());
+        if (end.before(start)) {
+            Toast.makeText(getApplicationContext(), "Fecha de inicio no puede ser mayor a fecha fin", Toast.LENGTH_LONG).show();
+            btnAplicar.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
         getLuminosidad(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
         getLuminosidadTable(txtFechaInicio.getText().toString(), txtFechaFin.getText().toString());
     }
