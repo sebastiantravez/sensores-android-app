@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".ui.home.ui.dashboard.DashboardFragment"
     android:orientation="vertical"
     android:padding="16dp"
     android:visibility="visible"
-    tools:context=".ui.home.HomeActivity"
     android:id="@+id/draw_layout">
-
 
     <TextView
         android:id="@+id/textView2"
@@ -17,7 +16,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:freezesText="false"
-        android:text="Sensores Caja 1"
+        android:text="Sensores Caja 2"
         android:textColor="#0E0E0E"
         android:textFontWeight="@integer/material_motion_duration_medium_1"
         android:textSize="34sp"
@@ -123,6 +122,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:srcCompat="@drawable/brillo" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

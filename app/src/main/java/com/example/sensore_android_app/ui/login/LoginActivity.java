@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.sensore_android_app.R;
 import com.example.sensore_android_app.databinding.ActivityLoginBinding;
 import com.example.sensore_android_app.ui.home.HomeActivity;
+import com.example.sensore_android_app.ui.home.ProfileActivity;
 import com.example.sensore_android_app.ui.register.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -61,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             loadingProgressBar.setVisibility(View.GONE);
                             loginButton.setEnabled(true);
-                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
                             finish();
                             Toast.makeText(getApplicationContext(), "Bienvenido " + usernameEditText.getEditText().getText().toString(), Toast.LENGTH_SHORT).show();
                         } else {

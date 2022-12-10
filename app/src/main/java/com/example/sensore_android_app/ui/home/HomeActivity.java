@@ -2,6 +2,9 @@ package com.example.sensore_android_app.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,43 +29,19 @@ import com.google.android.material.navigation.NavigationView;
 import lombok.NonNull;
 
 
+@RequiresApi(api = Build.VERSION_CODES.O)
+@SuppressLint("WrongViewCast")
 public class HomeActivity extends AppCompatActivity {
-
-    BottomNavigationView bottomNavigationView;
-    DashboardFragment dashboardFragment = new DashboardFragment();
 
     AppCompatImageView imageButtonHum;
     AppCompatImageView imageButtonTem;
     AppCompatImageView imageButtonLum;
 
-
-    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        bottomNavigationView  = findViewById(R.id.bottom_navigation);
-
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@androidx.annotation.NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.navigation:
-                        startActivity(new Intent(HomeActivity.this, DashboardFragment.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                }
-
-                return false;
-            }
-        });
-
 
         imageButtonHum = findViewById(R.id.btnHumedad);
         imageButtonTem = findViewById(R.id.btnTemperatura);

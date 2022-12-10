@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.DashboardFragment"
+    tools:context=".ui.home.ui.home.HomeFragment"
     android:orientation="vertical"
     android:padding="16dp"
     android:visibility="visible"
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:freezesText="false"
-        android:text="Sensores Caja 2"
+        android:text="Sensores Caja 1"
         android:textColor="#0E0E0E"
         android:textFontWeight="@integer/material_motion_duration_medium_1"
         android:textSize="34sp"
@@ -122,26 +122,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:srcCompat="@drawable/brillo" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/container"
-        android:layout_above="@id/bottom_navigation"/>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/buttom_navigation">
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

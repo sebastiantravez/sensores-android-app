@@ -17,8 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.home.DashboardFragment"
-            android:exported="false">
+            android:name=".ui.home.ProfileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
