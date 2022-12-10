@@ -7,6 +7,7 @@ import static com.example.sensore_android_app.utils.Const.LINE_TEMPERATURA_NAME;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -68,6 +69,8 @@ public class TemperaturaActivity extends AppCompatActivity {
     BarChart barChartTem;
     LineChart lineChartTem;
 
+    String API = "";
+
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
@@ -76,6 +79,9 @@ public class TemperaturaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperatura);
+
+        Intent intent = this.getIntent();
+        API = intent.getStringExtra("id");
 
         txtFechaInicio = findViewById(R.id.txtFechaInicio);
         txtFechaFin = findViewById(R.id.txtFechaFin);
@@ -166,7 +172,7 @@ public class TemperaturaActivity extends AppCompatActivity {
 
     public void getTemperatura(String fechaInicio, String fechaFin) {
         try {
-            Call<Temperatura> temperaturaCall = clientApi.getTemperatura(fechaInicio, fechaFin);
+            Call<Temperatura> temperaturaCall = clientApi.getTemperatura(fechaInicio, fechaFin, API);
             temperaturaCall.enqueue(new Callback<Temperatura>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
@@ -229,7 +235,7 @@ public class TemperaturaActivity extends AppCompatActivity {
 
     public void getTemperaturaTable(String fechaInicio, String fechaFin) {
         try {
-            Call<TemperaturaTable> temperaturaTableCall = clientApi.getTemperaturaTable(fechaInicio, fechaFin);
+            Call<TemperaturaTable> temperaturaTableCall = clientApi.getTemperaturaTable(fechaInicio, fechaFin, API);
             temperaturaTableCall.enqueue(new Callback<TemperaturaTable>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override

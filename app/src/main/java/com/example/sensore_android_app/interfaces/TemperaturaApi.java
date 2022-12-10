@@ -1,7 +1,9 @@
 package com.example.sensore_android_app.interfaces;
 
 import static com.example.sensore_android_app.utils.Const.BAR_TEMPERATURA_NAME;
+import static com.example.sensore_android_app.utils.Const.BAR_TEMPERATURA_NAME_2;
 import static com.example.sensore_android_app.utils.Const.LINE_TEMPERATURA_NAME;
+import static com.example.sensore_android_app.utils.Const.LINE_TEMPERATURA_NAME_2;
 
 import com.example.sensore_android_app.data.model.Temperatura;
 import com.example.sensore_android_app.data.model.TemperaturaTable;
@@ -21,6 +23,18 @@ public interface TemperaturaApi {
 
     @GET(LINE_TEMPERATURA_NAME + "/data")
     Call<TemperaturaTable> getTemperaturaTable(@Header("X-Auth-Token") String token,
+                                               @Query("tz") String timeZone,
+                                               @Query("start") String start,
+                                               @Query("end") String end);
+
+    @GET(BAR_TEMPERATURA_NAME_2 + "/data")
+    Call<Temperatura> getTemperatura2(@Header("X-Auth-Token") String token,
+                                     @Query("tz") String timeZone,
+                                     @Query("start") String start,
+                                     @Query("end") String end);
+
+    @GET(LINE_TEMPERATURA_NAME_2 + "/data")
+    Call<TemperaturaTable> getTemperaturaTable2(@Header("X-Auth-Token") String token,
                                                @Query("tz") String timeZone,
                                                @Query("start") String start,
                                                @Query("end") String end);

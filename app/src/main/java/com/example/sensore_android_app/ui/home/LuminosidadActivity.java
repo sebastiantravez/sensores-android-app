@@ -7,6 +7,7 @@ import static com.example.sensore_android_app.utils.Const.LINE_LUMINOSIDAD_NAME;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,6 +68,8 @@ public class LuminosidadActivity extends AppCompatActivity {
     BarChart barChartLum;
     LineChart lineChartLum;
 
+    String API = "";
+
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
@@ -75,6 +78,9 @@ public class LuminosidadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_luminosidad);
+
+        Intent intent = this.getIntent();
+        API = intent.getStringExtra("id");
 
         txtFechaInicio = findViewById(R.id.txtFechaInicio);
         txtFechaFin = findViewById(R.id.txtFechaFin);
@@ -165,7 +171,7 @@ public class LuminosidadActivity extends AppCompatActivity {
 
     public void getLuminosidad(String fechaInicio, String fechaFin) {
         try {
-            Call<Luminosidad> luminosidadCall = clientApi.getLuminosidad(fechaInicio, fechaFin);
+            Call<Luminosidad> luminosidadCall = clientApi.getLuminosidad(fechaInicio, fechaFin, API);
             luminosidadCall.enqueue(new Callback<Luminosidad>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
@@ -229,7 +235,7 @@ public class LuminosidadActivity extends AppCompatActivity {
 
     public void getLuminosidadTable(String fechaInicio, String fechaFin) {
         try {
-            Call<LuminosidadTable> luminosidadTableCall = clientApi.getLuminosidadTable(fechaInicio, fechaFin);
+            Call<LuminosidadTable> luminosidadTableCall = clientApi.getLuminosidadTable(fechaInicio, fechaFin, API);
             luminosidadTableCall.enqueue(new Callback<LuminosidadTable>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override

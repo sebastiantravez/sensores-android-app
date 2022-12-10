@@ -26,10 +26,8 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -41,21 +39,27 @@ public class HomeFragment extends Fragment {
         imageButtonHum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), HumedadActivity.class));
+                Intent intent = new Intent(getActivity(), HumedadActivity.class);
+                intent.putExtra("id", "BOX1");
+                startActivity(intent);
             }
         });
 
         imageButtonTem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), TemperaturaActivity.class));
+                Intent intent = new Intent(getActivity(), TemperaturaActivity.class);
+                intent.putExtra("id", "BOX1");
+                startActivity(intent);
             }
         });
 
         imageButtonLum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LuminosidadActivity.class));
+                Intent intent = new Intent(getActivity(), LuminosidadActivity.class);
+                intent.putExtra("id", "BOX1");
+                startActivity(intent);
             }
         });
 
