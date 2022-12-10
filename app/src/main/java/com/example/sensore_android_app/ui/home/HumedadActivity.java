@@ -7,6 +7,7 @@ import static com.example.sensore_android_app.utils.Const.LINE_HUMEDAD_NAME;
 import static com.example.sensore_android_app.utils.Const.TEXT_SIZE;
 import static com.example.sensore_android_app.utils.Const.VALUE_TEXT_SIZE;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,6 +68,8 @@ public class HumedadActivity extends AppCompatActivity {
     BarChart barChartHum;
     LineChart lineChartHumedad;
 
+    String API = "";
+
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
@@ -75,6 +78,9 @@ public class HumedadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_humedad);
+
+        Intent intent = this.getIntent();
+        API = intent.getStringExtra("id");
 
         txtFechaInicio = findViewById(R.id.txtFechaInicio);
         txtFechaFin = findViewById(R.id.txtFechaFin);
@@ -167,7 +173,7 @@ public class HumedadActivity extends AppCompatActivity {
 
     public void getHumedad(String fechaInicio, String fechaFin) {
         try {
-            Call<Humedad> humedadCall = clientApi.getHumedad(fechaInicio, fechaFin);
+            Call<Humedad> humedadCall = clientApi.getHumedad(fechaInicio, fechaFin, API);
             humedadCall.enqueue(new Callback<Humedad>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
@@ -230,7 +236,7 @@ public class HumedadActivity extends AppCompatActivity {
 
     public void getHumedadTable(String fechaInicio, String fechaFin) {
         try {
-            Call<HumedadTable> humedadTableCall = clientApi.getHumedadTable(fechaInicio, fechaFin);
+            Call<HumedadTable> humedadTableCall = clientApi.getHumedadTable(fechaInicio, fechaFin, API);
             humedadTableCall.enqueue(new Callback<HumedadTable>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override

@@ -25,10 +25,8 @@ public class DashboardFragment extends Fragment {
     AppCompatImageView imageButtonTem;
     AppCompatImageView imageButtonLum;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -40,21 +38,27 @@ public class DashboardFragment extends Fragment {
         imageButtonHum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), HumedadActivity.class));
+                Intent intent = new Intent(getActivity(), HumedadActivity.class);
+                intent.putExtra("id", "BOX2");
+                startActivity(intent);
             }
         });
 
         imageButtonTem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), TemperaturaActivity.class));
+                Intent intent = new Intent(getActivity(), TemperaturaActivity.class);
+                intent.putExtra("id", "BOX2");
+                startActivity(intent);
             }
         });
 
         imageButtonLum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LuminosidadActivity.class));
+                Intent intent = new Intent(getActivity(), LuminosidadActivity.class);
+                intent.putExtra("id", "BOX2");
+                startActivity(intent);
             }
         });
 

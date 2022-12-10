@@ -1,7 +1,9 @@
 package com.example.sensore_android_app.interfaces;
 
 import static com.example.sensore_android_app.utils.Const.BAR_HUMEDAD_NAME;
+import static com.example.sensore_android_app.utils.Const.BAR_HUMEDAD_NAME_2;
 import static com.example.sensore_android_app.utils.Const.LINE_HUMEDAD_NAME;
+import static com.example.sensore_android_app.utils.Const.LINE_HUMEDAD_NAME_2;
 
 import com.example.sensore_android_app.data.model.Humedad;
 import com.example.sensore_android_app.data.model.HumedadTable;
@@ -24,4 +26,15 @@ public interface HumedadApi {
                                        @Query("start") String start,
                                        @Query("end") String end);
 
+    @GET(BAR_HUMEDAD_NAME_2 + "/data")
+    Call<Humedad> getHumedad2(@Header("X-Auth-Token") String token,
+                             @Query("tz") String timeZone,
+                             @Query("start") String start,
+                             @Query("end") String end);
+
+    @GET(LINE_HUMEDAD_NAME_2 + "/data")
+    Call<HumedadTable> getHumedadTable2(@Header("X-Auth-Token") String token,
+                                       @Query("tz") String timeZone,
+                                       @Query("start") String start,
+                                       @Query("end") String end);
 }
