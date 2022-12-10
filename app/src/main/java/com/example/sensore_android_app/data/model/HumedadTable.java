@@ -13,5 +13,5 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class HumedadTable {
-    public List<List<Long>> results;
+    public List<Results> results;
 }

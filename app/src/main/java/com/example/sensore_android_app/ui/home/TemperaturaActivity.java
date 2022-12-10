@@ -237,7 +237,7 @@ public class TemperaturaActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             Map<Date, Long> data = new TreeMap<>();
-                            response.body().results.forEach(val -> {
+                            response.body().results.get(0).data.forEach(val -> {
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                                 String fechaUnica = dateFormat.format(new Date(Long.parseLong(val.get(0).toString())));
                                 try {

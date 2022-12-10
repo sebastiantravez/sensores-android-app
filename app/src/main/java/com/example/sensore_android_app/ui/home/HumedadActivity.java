@@ -238,20 +238,20 @@ public class HumedadActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             Map<Date, Long> data = new TreeMap<>();
-                            response.body().results.forEach(val -> {
+                            response.body().results.get(0).data.forEach(val -> {
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                                 String fechaUnica = dateFormat.format(new Date(Long.parseLong(val.get(0).toString())));
                                 try {
                                     Date fechaFinal = dateFormat.parse(fechaUnica);
                                     if (data.isEmpty()) {
-                                        data.put(fechaFinal, val.get(1));
+                                        data.put(fechaFinal, val.get(1).longValue());
                                     } else {
                                         Long valor = data.get(fechaFinal);
                                         if (valor == null) {
-                                            valor = val.get(1);
+                                            valor = val.get(1).longValue();
                                             data.put(fechaFinal, valor);
                                         } else if (val.get(1) > valor) {
-                                            data.put(fechaFinal, val.get(1));
+                                            data.put(fechaFinal, val.get(1).longValue());
                                         } else {
                                             data.put(fechaFinal, valor);
                                         }
