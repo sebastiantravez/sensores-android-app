@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/draw_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.ui.dashboard.DashboardFragment"
     android:orientation="vertical"
     android:padding="16dp"
     android:visibility="visible"
-    android:id="@+id/draw_layout">
+    tools:context=".ui.home.ui.dashboard.DashboardFragment">
 
     <TextView
         android:id="@+id/textView2"
@@ -25,14 +25,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.062" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="157dp"
         android:layout_height="49dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="90dp"
         android:fontFamily="sans-serif"
         android:text="Humedad de la Tierra"
@@ -50,7 +50,7 @@
         android:layout_width="168dp"
         android:layout_height="47dp"
         android:layout_marginStart="200dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif"
         android:text="Temperatura del Ambiente"
@@ -86,11 +86,10 @@
         android:layout_width="150dp"
         android:layout_height="110dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="220dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/input_bg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/btnTemperatura"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:srcCompat="@drawable/jardineria" />
@@ -99,13 +98,12 @@
         android:id="@+id/btnTemperatura"
         android:layout_width="150dp"
         android:layout_height="116dp"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/input_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.889"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnHumedad"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:srcCompat="@drawable/caliente" />
 
@@ -114,7 +112,7 @@
         android:layout_width="149dp"
         android:layout_height="130dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/input_bg"
         app:layout_constraintEnd_toEndOf="parent"
