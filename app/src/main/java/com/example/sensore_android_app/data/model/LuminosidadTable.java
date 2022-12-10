@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
 
@@ -12,5 +13,5 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class LuminosidadTable {
-    public ArrayList<ArrayList<Long>> results;
+    public List<Results> results;
 }

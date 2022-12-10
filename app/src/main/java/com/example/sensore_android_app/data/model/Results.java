@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,6 @@ public class Results {
     public Long timestamp;
     public Object context;
     public Long createdAt;
-    public Variable variable;
     public Float resultValue;
+    public ArrayList<ArrayList<Long>> data;
 }
