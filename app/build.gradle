@@ -47,6 +47,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:21.2.0'
     implementation 'com.google.firebase:firebase-database:20.1.0'
 
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
+
     implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
