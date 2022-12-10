@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.DashboardFragment">
+    tools:context=".ui.home.DashboardFragment"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:visibility="visible"
+    android:id="@+id/draw_layout">
 
     <TextView
         android:id="@+id/textView2"
