@@ -12,7 +12,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_user">Registrar</string>
     <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_home">Caja 1</string>
-    <string name="title_dashboard">Caja 2</string>
+    <string name="title_home">CMP Cacao Caja 1</string>
+    <string name="title_dashboard">CMP Cacao Caja 2</string>
     <string name="title_notifications">Notifications</string>
 </resources>
