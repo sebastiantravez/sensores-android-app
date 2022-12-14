@@ -10,17 +10,17 @@ public class Const {
     public static final Integer TEXT_SIZE = 100;
     public static final String COLOR_THEME = "#FFAE58";
 
-    public static final String BAR_HUMEDAD_NAME = "62b23ff00844204939c3598b";
-    public static final String BAR_TEMPERATURA_NAME = "62b24027d066dc3ac96bdb3e";
-    public static final String BAR_LUMINOSIDAD_NAME = "62b240629f7bba2ac2e70a24";
-    public static final String LINE_HUMEDAD_NAME = "62b240e4c3266a2c5723e990";
-    public static final String LINE_TEMPERATURA_NAME = "62b24121d1d5cb3809d393d4";
-    public static final String LINE_LUMINOSIDAD_NAME = "62b24144e0ea4c30af6af1da";
+    public static final String BAR_HUMEDAD_NAME = "63993d19fb18f0000ef6738b";
+    public static final String BAR_TEMPERATURA_NAME = "63993bf3621aa0000df0684e";
+    public static final String BAR_LUMINOSIDAD_NAME = "63993ceadcbcfc000bd9787c";
+    public static final String LINE_HUMEDAD_NAME = "639943fe9f626f000c1c3c89";
+    public static final String LINE_TEMPERATURA_NAME = "639942df7cafcd000e715b53";
+    public static final String LINE_LUMINOSIDAD_NAME = "639943a6dd826c000dbbc068";
 
-    public static final String BAR_HUMEDAD_NAME_2 = "62b23ff00844204939c3598b2";
-    public static final String BAR_TEMPERATURA_NAME_2 = "62b24027d066dc3ac96bdb3e2";
-    public static final String BAR_LUMINOSIDAD_NAME_2 = "62b240629f7bba2ac2e70a242";
-    public static final String LINE_HUMEDAD_NAME_2 = "62b240e4c3266a2c5723e9902";
-    public static final String LINE_TEMPERATURA_NAME_2 = "62b24121d1d5cb3809d393d42";
-    public static final String LINE_LUMINOSIDAD_NAME_2 = "62b24144e0ea4c30af6af1da2";
+    public static final String BAR_HUMEDAD_NAME_2 = "63993d959f626f000f4411b1";
+    public static final String BAR_TEMPERATURA_NAME_2 = "63993bcf9f626f000f4411b0";
+    public static final String BAR_LUMINOSIDAD_NAME_2 = "639939897cafcd000d760d81";
+    public static final String LINE_HUMEDAD_NAME_2 = "639943fe9f626f000c1c3c89";
+    public static final String LINE_TEMPERATURA_NAME_2 = "639942df7cafcd000e715b53";
+    public static final String LINE_LUMINOSIDAD_NAME_2 = "639943a6dd826c000dbbc068";
 }

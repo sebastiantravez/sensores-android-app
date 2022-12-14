@@ -244,8 +244,9 @@ public class HumedadActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             Map<Date, Long> data = new TreeMap<>();
-                            response.body().results.get(0).data.forEach(val -> {
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            Integer value = API.equals("BOX1") ? 0 : 1;
+                            response.body().results.get(value).data.forEach(val -> {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String fechaUnica = dateFormat.format(new Date(Long.parseLong(val.get(0).toString())));
                                 try {
                                     Date fechaFinal = dateFormat.parse(fechaUnica);
@@ -334,7 +335,8 @@ public class HumedadActivity extends AppCompatActivity {
         List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.addAll(lineDataSets);
         LineData lineData = new LineData(dataSets);
-        lineChartHumedad.getDescription().setText("Humedad");
+        String typeHumedad = API.equals("BOX1") ? "Humedad" : "Humedad 2";
+        lineChartHumedad.getDescription().setText(typeHumedad);
         lineChartHumedad.getDescription().setTextSize(TEXT_SIZE);
         lineChartHumedad.animateY(DURATION);
         lineChartHumedad.setData(lineData);

@@ -243,8 +243,9 @@ public class TemperaturaActivity extends AppCompatActivity {
                     try {
                         if (response.isSuccessful()) {
                             Map<Date, Long> data = new TreeMap<>();
-                            response.body().results.get(0).data.forEach(val -> {
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            Integer value = API.equals("BOX1") ? 0 : 1;
+                            response.body().results.get(value).data.forEach(val -> {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String fechaUnica = dateFormat.format(new Date(Long.parseLong(val.get(0).toString())));
                                 try {
                                     Date fechaFinal = dateFormat.parse(fechaUnica);
@@ -333,7 +334,8 @@ public class TemperaturaActivity extends AppCompatActivity {
         List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.addAll(lineDataSets);
         LineData lineData = new LineData(dataSets);
-        lineChartTem.getDescription().setText("Temperatura");
+        String name = API.equals("BOX1") ? "Temperatura" : "Temperatura 2";
+        lineChartTem.getDescription().setText(name);
         lineChartTem.getDescription().setTextSize(TEXT_SIZE);
         lineChartTem.animateY(DURATION);
         lineChartTem.setData(lineData);
